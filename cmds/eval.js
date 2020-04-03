@@ -1,0 +1,15 @@
+﻿module.exports.info = {
+name: 'эвал',
+engname: 'eval',
+regex: '[эе]вал(ар)?|д?жс',
+engregex: 'eval|d?js',
+args: '<код>',
+engargs: '<code>',
+desc: 'Эмулирует код',
+engdesc: 'Evalute the code',
+//private: true
+}
+module.exports.run = (message, ph) => {
+message.channel.startTyping()
+    try {let evaled = (message.author.id==Comp.owners.stalin?eval(message.args.join(' ')):require('safe-eval')(message.args.join(' ').replace(/eval\((.*?)\)/g, ''))); let eevaled = typeof evaled; if(typeof evaled!== 'string') evaled = require('util').inspect(evaled); message.channel.stopTyping(); message.channel.send(`//${ph[0]} ✅\n//${ph[1]} ${eevaled}\n${message.author.id==Comp.owners.stalin?evaled:evaled.replace(/(http:\/\/|https:\/\/)?discord(app\.com\/invite|.\w{2}\/\w{3,})/gi, '[INVITE]')}`, {code: 'js', split: '\n'});} catch (err) {message.channel.stopTyping(); message.channel.send(`//${ph[2]} ❎\n${err}`, {code: 'js'});}
+}

@@ -1,0 +1,6 @@
+#! /bin/sh
+trap 'echo "\nExecution Error: Exit"; exit 1' 1 2 3 8 9 15
+read -p 'Commit name: ' cn
+git add .
+git commit -S -m $cn
+git push computer master

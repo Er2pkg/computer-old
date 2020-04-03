@@ -1,0 +1,19 @@
+{
+  "name": "computer",
+  "version": "1.0.0",
+  "description": "",
+  "main": "load.js",
+  "author": "Stalin",
+  "license": "ISC",
+  "dependencies": {
+    "child_process": "^1.0.2",
+    "discord.js": "^11.6.3",
+    "express": "^4.17.1",
+    "jimp": "^0.9.6",
+    "mysql2": "^2.1.0",
+    "opusscript": "0.0.7",
+    "os": "^0.1.1",
+    "safe-eval": "^0.4.1",
+    "util": "^0.12.2"
+  }
+}
