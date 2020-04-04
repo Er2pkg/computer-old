@@ -17,8 +17,8 @@ Comp.con.query(`SELECT * FROM xp WHERE id = ${message.author.id}`, (err, rows) =
 if(err) console.log(err)
 if(rows.length < 1) Comp.con.query(`INSERT INTO xp (id, xp, lvl) VALUES (${message.author.id}, ${message.xp}, 1)`)
 else {Comp.con.query(`UPDATE xp SET xp = ${rows[0].xp + message.xp} WHERE id = ${message.author.id}`)
-if(rows[0].xp + message.xp <= 0 && rows[0].lvl == 1) return
-if(rows[0].xp + message.xp <= 0) return Comp.con.query(`UPDATE xp SET xp = ${Comp.xpFormule(rows[0].lvl-1)+message.xp}, lvl = ${rows[0].lvl-1} WHERE id = ${message.author.id}`)
+if(message.xp <= 0 && rows[0].lvl >= 1) Comp.con.query(`UPDATE xp SET xp = ${rows[0].xp+message.xp} WHERE id = ${message.author.id}`)
+if(message.xp <= 0 && rows[0].xp + message.xp <= 0 && rows[0].lvl > 1) return Comp.con.query(`UPDATE xp SET xp = ${Comp.xpFormule(rows[0].lvl-1)+message.xp}, lvl = ${rows[0].lvl-1} WHERE id = ${message.author.id}`)
 if(rows[0].xp + message.xp >= Comp.xpFormule(rows[0].lvl)) {
 if (message.lang == 'ru') message.channel.send(new Comp.Discord.RichEmbed()
 .setTitle("У вас новый уровень!")
@@ -32,6 +32,7 @@ Comp.con.query(`UPDATE xp SET xp = 0, lvl = ${rows[0].lvl + 1} WHERE id = ${mess
 }}})}
 
 if(!prefix) return
+else message.xp = 0
 
 message.args = message.content.slice(prefix.length).trim().split(/ +/g)
 message.command = message.args.shift().toLowerCase()
