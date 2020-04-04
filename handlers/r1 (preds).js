@@ -10,6 +10,7 @@ Comp.client.guilds.forEach(async guild => {
         matches.forEach(match => {
             if (!Comp.invites.find(m => m.guild == message.guild.id && m.code == match.match(/discord(app\.com\/invite|.\w{2})\/(\w{3,})/i)[2])) {
             message.delete()
+            message.xp = -30
 if(message.glang === 1) message.author.send('```' + `Товарищ ${message.guild.member(message.author).displayName}, реклама запрещена.` + '```')
 else message.author.send('```' + `Comrade ${message.member.displayName}, ads not allowed.` + '```')
 Comp.con.query(`SELECT * FROM pred WHERE id = ${message.author.id}`, (err, rows) => {
@@ -41,6 +42,7 @@ const mut = message.guild.roles.find(r => r.name.match(/[Mm]ut[ei][dt]|Заму�
             collectorr.on('collect', msg3 => {
                 if (!message.member.roles.has(mut)) {
 message.member.addRole(mut.id)
+message.xp = -50
                     if(message.glang === 1) message.reply('Всё в порядке? Ты был наказан на час.')
                     else message.reply('All ok? You will muted on 1 hour.')
 Comp.con.query('SELECT * FROM zamuchen WHERE id='+message.author.id+' AND guild='+message.guild.id, (err, rows) => {

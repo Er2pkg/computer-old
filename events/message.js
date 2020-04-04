@@ -4,6 +4,7 @@ if (!message.guild || message.author.bot) return
 const tglang = Comp.client.glangs.find(l => l.gid === message.guild.id)
 message.glang = tglang?tglang.lang:1
 message.lang = message.glang==1?'ru':'en'
+message.xp = Comp.random(15, 25)
 
 if(Comp.msghandlers.length > 0)
 Comp.msghandlers.forEach(h => h.run(message, message.glang))
@@ -11,32 +12,24 @@ Comp.msghandlers.forEach(h => h.run(message, message.glang))
 const prefix = Comp.client.prefixes.find(p => message.content.toLowerCase().startsWith(p))
 
 if(!prefix) {
+if(Comp.unxp.has(message.author.id) || message.channel.id == '693046024146518107') return
 Comp.con.query(`SELECT * FROM xp WHERE id = ${message.author.id}`, (err, rows) => {
-let ixp = Comp.genxp()
 if(err) console.log(err)
-let sql
-if(rows.length < 1) { sql = `INSERT INTO xp (id, xp, lvl) VALUES (${message.author.id}, ${ixp}, 1)`}
-else { sql = `UPDATE xp SET xp = ${rows[0].xp + ixp} WHERE id = ${message.author.id}`
-if(rows[0].lvl * 300 <= rows[0].xp + ixp) {
-console.log('Lvl up', message.author.id, 'to level', rows[0].lvl + 1)
-if (message.glang === 1) message.channel.send(new Comp.Discord.RichEmbed()
-    .setTitle("У вас новый уровень!")
-    .setColor('00fff0')
-    .addField("Уровень", rows[0].lvl + 1)
-    ).then(msg => {msg.delete(5500)})
-else
-message.channel.send(new Comp.Discord.RichEmbed()
-    .setTitle("You get a new level!")
-    .setColor('00fff0')
-    .addField("Level", rows[0].lvl + 1)
-    ).then(msg => {msg.delete(5500)})
-
-if(rows[0].xp + ixp >= rows[0].lvl * 300) { sql = `UPDATE xp SET xp = 0, lvl = ${rows[0].lvl + 1} WHERE id = ${message.author.id}`; }
-else { sql = `UPDATE xp SET xp = ${rows[0].xp + ixp - rows[0].lvl * 300}, lvl = ${rows[0].lvl + 1} WHERE id = ${message.author.id}`; }
-}}
-Comp.con.query(sql)
-})
-}
+if(rows.length < 1) Comp.con.query(`INSERT INTO xp (id, xp, lvl) VALUES (${message.author.id}, ${message.xp}, 1)`)
+else {Comp.con.query(`UPDATE xp SET xp = ${rows[0].xp + message.xp} WHERE id = ${message.author.id}`)
+if(rows[0].xp + message.xp <= 0 && rows[0].lvl == 1) return
+if(rows[0].xp + message.xp <= 0) return Comp.con.query(`UPDATE xp SET xp = ${Comp.xpFormule(rows[0].lvl-1)+message.xp}, lvl = ${rows[0].lvl-1} WHERE id = ${message.author.id}`)
+if(rows[0].xp + message.xp >= Comp.xpFormule(rows[0].lvl)) {
+if (message.lang == 'ru') message.channel.send(new Comp.Discord.RichEmbed()
+.setTitle("У вас новый уровень!")
+.setColor('00fff0')
+.addField("Уровень", rows[0].lvl + 1)).then(msg => msg.delete(5500))
+else message.channel.send(new Comp.Discord.RichEmbed()
+.setTitle("You get a new level!")
+.setColor('00fff0')
+.addField("Level", rows[0].lvl + 1)).then(msg => msg.delete(5500))
+Comp.con.query(`UPDATE xp SET xp = 0, lvl = ${rows[0].lvl + 1} WHERE id = ${message.author.id}`)
+}}})}
 
 if(!prefix) return
 
