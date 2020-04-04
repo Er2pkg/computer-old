@@ -21,7 +21,7 @@ Comp.warnedFlood = new Set()
 Comp.unxp = new Set()
 Comp.muted = '561165692896804895'
 
-Comp.client.login(process.env.ClientToken).then(() => delete process.env.ClientToken)
+Comp.client.login(process.env.ClientToken).then(() => delete process.env.ClientToken).catch()
 
 Comp.owners = {
 'stalin': '544031928358273045',

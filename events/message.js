@@ -13,6 +13,7 @@ const prefix = Comp.client.prefixes.find(p => message.content.toLowerCase().star
 
 if(!prefix) {
 if(Comp.unxp.has(message.author.id) || message.channel.id == '693046024146518107') return
+Comp.client.stats.msgs++
 Comp.con.query(`SELECT * FROM xp WHERE id = ${message.author.id}`, (err, rows) => {
 if(err) console.log(err)
 if(rows.length < 1) Comp.con.query(`INSERT INTO xp (id, xp, lvl) VALUES (${message.author.id}, ${message.xp}, 1)`)
@@ -44,6 +45,7 @@ else return message.reply('I\'m there. '+(Comp.client.ignores.includes(message.a
 
 const cmd = [Comp.client.commands.find(c => message.command.match(new RegExp(c.regex))), Comp.client.commands.find(c => message.command.match(new RegExp(c.engregex?c.engregex:c.regex)))]
 if(Comp.client.ignores.includes(message.author.id) && (cmd[0].name && cmd[0].name!=='verify')) return message.react('⛔')
+if(cmd[0] || cmd[1]) Comp.client.stats.cmds.total++, Comp.client.stats.cmds.perHour++
 if (message.glang == 1 && cmd[0] && (!cmd[0].private || message.author.id === Comp.owners.stalin) && cmd[0].run) cmd[0].uses+=1, cmd[0].run(message)
 if (message.glang == 2 && cmd[1] && (!cmd[1].private || message.author.id === Comp.owners.stalin) && cmd[1].run) cmd[1].uses+=1, cmd[1].run(message)
 

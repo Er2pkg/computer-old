@@ -6,8 +6,12 @@ Comp.client.prefixes = ['товарищ', 'таварищ', 'таварищь', 
 Comp.client.stalinguild = Comp.client.guilds.get('560681320431222842')
 Comp.client.user.setActivity(`${Comp.client.prefixes[0]} помогай | ЭВМ им. Сталина.`)
 
+Comp.client.stats = {cmds: {total: 0, perHour: 0}, msgs: 0}
 Comp.client.glangs = []
 Comp.client.ignores = []
+Comp.client.commands = []
+
+setInterval(() => Comp.client.stats.cmds.perHour = 0, 3600000)
 
 Comp.client.rstatus = () => {
 let i = 0,
@@ -17,6 +21,28 @@ Comp.client.user.setActivity(`${Comp.client.prefixes[0]} помогай | ` + st
 }
 
 setInterval(() => Comp.client.rstatus(), 5000)
+
+setInterval(() =>
+Comp.client.channels.get('695980819650576384').fetchMessage('695981096202010654').then(msg => 
+msg.edit(new Comp.Discord.RichEmbed()
+.setTitle(`Бот ${Comp.client.user.username}`)
+.setThumbnail(Comp.client.user.avatarURL)
+.addField('Пинг', `${Comp.addCommas(Math.round(Comp.client.ping))} мс`, true)
+.addField('ОЗУ', `${Comp.addCommas(Math.round(process.memoryUsage().rss / 1024 / 1024 ))} / 512 МБ`, true)
+.addField('Команд', 'Всего: ' + Comp.commands.length + '\nДоступных всем: ' + Comp.commands.filter(c => !c.private && !c.hidden).length + '\nСтраниц в команде помощи: ' + Comp.declOfNum(Math.ceil(Comp.commands.filter(c => !c.private && !c.hidden).length / 15), ['страница', 'страницы', 'страниц'], 1), true)
+.addField('Использованных команд', Comp.addCommas(Comp.client.stat.cmds.total), true)
+.addField('Команды за час', Comp.addCommas(Comp.client.stats.cmds.perHour), true)
+.addField('Сообщений', Comp.addCommas(Comp.client.stats.msgs), true)
+.addField('Товарищей', Comp.addCommas(Comp.client.users.size), true)
+.addField('Каналов', Comp.addCommas(Comp.client.channels.size), true)
+.addField('Серверов', Comp.addCommas(Comp.client.guilds.size), true)
+.addField('Эмодзи', Comp.addCommas(Comp.client.emojis.size), true)
+.addField('Включенные голосовые каналы', Comp.addCommas(Comp.client.voiceConnections.size), true)
+.addField('Работает', `${Comp.declOfNum(Math.round(Comp.client.uptime / (1000 * 60 * 60)), ['час', 'часа', 'часов'], 1)} и ${Comp.declOfNum(Math.round(Comp.client.uptime / (1000 * 60)) % 60, ['минута', 'минуты', 'минут'], 1)}`, true)
+.addField('Включен',Comp.client.readyAt.toLocaleString('ru-RU', {timeZone: 'Europe/Moscow', hour12: false}) + ' MSK', true)
+.addField('Московское время', new Date(Date.now()).toLocaleString('ru-RU', {timeZone: 'Europe/Moscow', hour12: false}).slice(0, -3), true)
+//.addField(`Последний коммит`, '...', true)
+.setColor('00fff0'))), 15000)
 
 setInterval(() => {
 Comp.client.guilds.forEach(g =>
@@ -44,8 +70,6 @@ Comp.client.glangs.push({
 gid: rows[i].id,
 lang: rows[i].lang || 1,
 })}})
-
-Comp.client.commands = []
 
 Comp.fs.readdir('./cmds', (err, cmds) => {
 let i = 0
