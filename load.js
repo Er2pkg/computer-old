@@ -3,27 +3,32 @@ constructor() {
 this.fs = require('fs')
 this.handlers = []
 this.msghandlers = []
-this.fs.readdir('./handlers', (err, data) => {
+this.modules = []
+this.ltypes = ['handlers', 'modules']
+this.ltypes.forEach(type =>
+this.fs.readdir('./'+type, (err, data) => {
+console.log('Starting', type)
 let i = 0
 if(err) throw err
-data.forEach(handler => {
+if(type == 'modules') data.forEach(module => {this.modules.push({name: module.slice(0, -3), path: './modules/'+module, run: () => require('./modules/'+module).run() }); return this.modules.forEach(m => m.run())})
+else data.forEach(handler => {
 if(handler.startsWith('r')) 
 this.msghandlers.push({
 name: handler.slice(1, -3),
 path: './handlers/'+handler,
-run: (message, glang) => require('./handlers/'+handler).run(message, glang)
+run: message => require('./handlers/'+handler).run(message)
 }),
-console.log('Загружен хандлер сообщений', handler.slice(1, -3)), i++
+console.log('Loaded message handler', handler.slice(1, -3)), i++
 if(handler.startsWith('-') || handler.startsWith('r')) return
 if(!handler.startsWith('0'))
 i++,
-console.log('Загружен хандлер', handler.slice(0, -3).split(' ')[0], handler.slice(0, -3).split(' ')[1])
+console.log('Loaded handler', handler.slice(0, -3).split(' ')[0], handler.slice(0, -3).split(' ')[1])
 this.handlers.push({
 name: handler.slice(0, -3),
 path: './handlers/'+handler,
 run: () => require('./handlers/'+handler).run()
 })
-}); console.log('Загружено', i, ['хандлер', 'хандлера', 'хандлеров'][(i % 100 > 4 && i % 100 < 20)?2:[2, 0, 1, 1, 1, 2][(i % 10 < 5)?i % 10 : 5]])
-this.handlers.forEach(h => h.run())
-})}}
+}); if(type == 'handlers') {console.log('Loaded', i, 'handlers'); this.handlers.forEach(h => h.run())}
+}))
+}}
 global.Comp = new Comp()

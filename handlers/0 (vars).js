@@ -11,12 +11,10 @@ database: process.env.DBuser,
 Comp.os = require('os')
 Comp.Discord = require("discord.js")
 Comp.client = new Comp.Discord.Client({disableEveryone: true})
-Comp.express = require('express')
-Comp.app = Comp.express()
 Comp.mysql = require('mysql2')
 Comp.jimp = require('jimp')
 Comp.fs = require('fs')
-Comp.ruen = require('../ruen.json')
+Comp.locales = require('../locales.json')
 Comp.warnedFlood = new Set()
 Comp.unxp = new Set()
 Comp.muted = '561165692896804895'
