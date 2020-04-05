@@ -3,10 +3,9 @@ module.exports.run = () => {
 console.log('Запуск клиента...')
 
 Comp.client.prefixes = ['товарищ', 'таварищ', 'таварищь', 'товарищь', `<@${Comp.client.user.id}>`, 'comrade', 'comrad']
-Comp.client.stalinguild = Comp.client.guilds.get('560681320431222842')
 Comp.client.user.setActivity(`${Comp.client.prefixes[0]} помогай | ЭВМ им. Сталина.`)
 
-Comp.client.stats = {cmds: {total: 0, perHour: 0}, msgs: 0}
+Comp.client.stats = {cmds: {total: 0, perHour: 0}, users: {users: Comp.client.users.filter(u => !u.bot).size, bots: Comp.client.users.filter(u => u.bot).size}, msgs: 0}
 Comp.client.glangs = []
 Comp.client.ignores = []
 Comp.client.commands = []

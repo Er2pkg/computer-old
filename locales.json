@@ -5,7 +5,7 @@
 "shell": ["Запуск команды..."],
 "eval": ["Успешно", "Тип:", "Ошибочка"],
 "idea": [],
-"information": ["Информация о боте", "Запущен на архитектуре", "ОС", "процессора", "мощностью", " МГЦ", " ГГЦ", "Пинг API:", "ОЗУ:", "Гигабайт", "Участники:", ["участник", "участника", "участников"], "После загрузки прошло:", ["час", "часа", "часов"], "и", ["минута", "минуты", "минут"], "Включён:"],
+"information": ["Информация о боте", "Пинг API", "ОЗУ", "Гигабайт", "Команд", ["Всего: ", "Доступных всем: ", "Страниц в команде помощи: "], "Использованных команд", "Команд за час", "Сообщений", "Товарищи", ["товарищ", "товарища", "товарищей"], ["бот", "бота", "ботов"], "всего", "Каналов", "Серверов", "Эмодзи", "Подключенные голосовые каналы", "Работает", ["час", "часа", "часов"], "и", ["минута", "минуты", "минут"], "Включен", "Московское время"],
 "note": ["у вас нет заметок", "введите текст заметки", "введите номер заметки", "Добавлена заметка ", "введите номер заметки ЦИФРОЙ", "заметки не существует", " или напишите `все`", "Удалены все заметки", "Удалена заметка ", "введите текст новой заметки", "Заметка ", " обновлена"],
 "afk": ["Товарищ", "ненадолго отошёл", "вернулся"],
 "rank": ["у него ещё нет XP", "Уровень: "]
@@ -16,7 +16,7 @@
 "shell": ["Executing a command..."],
 "eval": ["Successfully", "Type:", "Error"],
 "idea": [],
-"information": ["Information about the bot", "Launched on the architecture", "OS", "on processor", "with speed", " MHz", " GHz", "API ping:", "RAM:", "GB", "Users:", ["user", "users", "users"], "After loading passed:", ["hour", "hours", "hours"], "and", ["minute", "minutes", "minutes"], "Turned on at:"],
+"information": ["Information about the bot", "API ping", "RAM", "GB", "Commands", ["Total: ", "Available to everyone: ", "Pages in help command: "], "Used commands", "Commands per hour", "Messages", "Comrades", ["comrade", "comrades", "comrades"], ["bot", "bots", "bots"], "total", "Channels", "Servers", "Emojis", "Connected voice channels", "Working", ["hour", "hours", "hours"], "and", ["minute", "minutes", "minutes"], "Turned on at", "Московское время"],
 "note": ["you haeven't got any notes", "enter the note text", "enter the note number", "Added a note ", "enter the note number as a NUMBER", "note don't exist", " or write `all`", "All notes were deleted", "Removed the note ", "enter the text of new note", "Note ", " was updated"],
 "afk": ["Comrade", "walked away for a while", "came back"],
 "rank": ["it doesn't have XP yet", "Level: "]

@@ -6,7 +6,7 @@ Comp.cmdPH = setInterval(() => Comp.client.stats.cmds.perHour = 0, 3600000)
 
 Comp.RS = setInterval(() => {
 let i = 0,
-status = [`ЭВМ им. Сталина.`, `${Comp.declOfNum(Comp.client.stalinguild.members.filter(member => !member.user.bot).size, ['товарищ', 'товарища', 'товарищей'], 1)}`]
+status = [`ЭВМ им. Сталина.`, `${Comp.declOfNum(Comp.client.stats.users.users, ['товарищ', 'товарища', 'товарищей'], 1)}`]
 if(Comp.client.user.presence.game.name.includes(`${Comp.client.prefixes[0]} помогай | ${status[0]}`)) i = 1
 Comp.client.user.setActivity(`${Comp.client.prefixes[0]} помогай | ` + status[i], {type: 'PLAYING'})
 }, 5000)
@@ -22,7 +22,7 @@ msg.edit(new Comp.Discord.RichEmbed()
 .addField('Использованных команд', Comp.addCommas(Comp.client.stats.cmds.total), true)
 .addField('Команды за час', Comp.addCommas(Comp.client.stats.cmds.perHour), true)
 .addField('Сообщений', Comp.addCommas(Comp.client.stats.msgs), true)
-.addField('Товарищей', Comp.addCommas(Comp.client.users.size), true)
+.addField('Товарищей', Comp.addCommas(Comp.client.users.size) + ` всего (${Comp.declOfNum(Comp.client.stats.users.users, ['товарищ', 'товарища', 'товарищей'], 1)}, ${Comp.declOfNum(Comp.client.stats.bots, ['бот', 'бота', 'ботов'], 1)})`, true)
 .addField('Каналов', Comp.addCommas(Comp.client.channels.size), true)
 .addField('Серверов', Comp.addCommas(Comp.client.guilds.size), true)
 .addField('Эмодзи', Comp.addCommas(Comp.client.emojis.size), true)
@@ -34,6 +34,7 @@ msg.edit(new Comp.Discord.RichEmbed()
 .setColor('00fff0'))), 15000)
 
 Comp.intDB = setInterval(() => {
+Comp.client.stats.users = {users: Comp.client.users.filter(u => !u.bot).size, bots: Comp.client.users.filter(u => u.bot).size}
 Comp.client.guilds.forEach(g =>
 g.members.forEach(m => {
 let role = m.guild.roles.find(r => r.name.match(/[Mm]ut[ei][dt]|Замученные/))
