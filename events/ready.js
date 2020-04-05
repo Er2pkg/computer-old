@@ -21,7 +21,7 @@ Comp.client.commands.push({
 name: cmmd.info.name,
 engname: cmmd.info.engname || cmmd.info.name,
 regex: cmmd.info.regex.toString().slice(1, -1),
-engregex: cmmd.info.engregex.toString().slice(1, -1),
+engregex: cmmd.info.engregex?cmmd.info.engregex.toString().slice(1, -1):'',
 args: cmmd.info.args,
 engargs: cmmd.info.engargs,
 desc: cmmd.info.desc,
