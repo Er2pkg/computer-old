@@ -7,7 +7,7 @@ module.exports.run = async message => {
 await message.channel.startTyping()
 message.delete(1500)
 let i = 0, captcha = Math.random().toString(36).substr(2, 6), user = message.member,
-authorized = message.guild.roles.find(r => r.name.match(new RegExp(/auth(orized)?|member|мембер|участник|человек|граждан(е|ин)/))).catch(() => message.reply('роль не нашлась :(')
+authorized = message.guild.roles.find(r => r.name.match(new RegExp(/auth(orized)?|member|мембер|участник|человек|граждан(е|ин)/))).catch(() => message.reply('роль не нашлась :('))
 if(!authorized) return
 else authorized = authorized.id
 if(!message.author.bot && (['verify', 'verification', 'верифи', 'верификация'].includes(message.channel.name) || [/*some ids*/'561921259429167117'].includes(message.channel.id))){
