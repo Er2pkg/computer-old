@@ -6,6 +6,7 @@
   "author": "Stalin",
   "license": "ISC",
   "dependencies": {
+    "@megavasiliy007/sdc-api": "github:MegaVasiliy007/sdc-api",
     "child_process": "^1.0.2",
     "discord.js": "^11.6.3",
     "express": "^4.17.1",
