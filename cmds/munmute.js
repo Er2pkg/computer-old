@@ -5,8 +5,8 @@ regex: '/(ра[зс]|[ау]н)му{1,}[тд]/',
 engregex: '/(ra[sz]|[au]n)m[uo]{1,}[td]/',
 args: '<id> [reason]',
 engargs: '<id> [reason]',
-desc: 'Анмуд наххуй',
-engdesc: 'Unmood naxxuy',
+desc: 'Анмут',
+engdesc: 'Unmute',
 private: true,
 }
 module.exports.run = message => 
