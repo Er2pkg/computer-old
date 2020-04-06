@@ -41,4 +41,4 @@ Comp.con.query(`SELECT * FROM xp WHERE id = ${user.id}`, (err, rows) => {
 if(rows.length < 1) return message.reply(ph[0])
 if(!['prev', 'preview'].includes(message.args[0])) rcard(rows[0], (rpr.xp / ((5 * (rpr.level ^ 2) + 50 * rpr.level + 100) / 100)) * 7, Date.now())
 else rcard({bg: 'https://cdn.mee6.xyz/plugins/levels/cards/backgrounds/4cc81b4c-c779-4999-9be0-8a3a0a64cbaa.jpg', money: 228000, lvl: 12, xp: 769}, ((769 / ((5 * (12 ^ 2) + 50 * 12 + 100) / 100)) * 7), Date.now())
-})
+})}
