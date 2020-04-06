@@ -49,7 +49,7 @@ if(cmd[0] || cmd[1]) Comp.client.stats.cmds.total++, Comp.client.stats.cmds.perH
 if (message.glang == 1 && cmd[0] && (!cmd[0].private || message.author.id === Comp.owners.stalin) && cmd[0].run) cmd[0].uses+=1, cmd[0].run(message)
 if (message.glang == 2 && cmd[1] && (!cmd[1].private || message.author.id === Comp.owners.stalin) && cmd[1].run) cmd[1].uses+=1, cmd[1].run(message)
 
-if(message.command.match(/п[оа]м[оа]г[аи]й?/)) {
+if(message.command.match(/(п[оа]м[оа]г[аи]й?)|помощь?/)) {
 if(message.glang !== 1) return message.reply('this command allow only on :flag_ru: language, but for this guild will setting up an :flag_us: language.')
 const arr = Comp.client.commands.filter(c => !c.hidden).map(cmd => `<:USSR:560858037041102858> **${Comp.client.prefixes[0]} ${cmd.name} ${cmd.args?`\`${cmd.args}\``:''} -** ${cmd.desc?cmd.desc:''} ${cmd.private? '(Требуется товарищ Сталин для её выполнения)' : ''}`)
 arr.push(`<:USSR:560858037041102858> **${Comp.client.prefixes[0]} у-я ` + '`<язык>`' + ` -** Изменить язык`)
@@ -57,7 +57,7 @@ message.channel.send(arr.join('\n'))
 }
 
 if(message.command.match(/hel{1,}[pb]/)) {
-if(message.glang !== 2) return message.reply('эта команда разрешена только на :flag_us: языке, но у этого сервера стоит :flag_ru: язык.');
+if(message.glang !== 2) return message.reply('эта команда разрешена только на :flag_us: языке, но у этого сервера стоит :flag_ru: язык. Используйте к.помощь');
 const arr = Comp.client.commands.filter(c => !c.hidden).map(cmd => `<:USSR:560858037041102858> **${Comp.client.prefixes[5]} ${cmd.engname} ${cmd.engargs?`\`${cmd.engargs}\``:''} -** ${cmd.engdesc?cmd.engdesc:(cmd.desc?cmd.desc:'')} ${cmd.private? '(Need comrade Stalin for run this command)' : ''}`);
 arr.push(`<:USSR:560858037041102858> **${Comp.client.prefixes[5]} set-lang ` + '`<language>`' + ` -** Change a language`)
 message.channel.send(arr.join('\n'))
