@@ -8,7 +8,7 @@ await message.channel.startTyping()
 message.delete(1500)
 let i = 0, captcha = Math.random().toString(36).substr(2, 6), user = message.member,
 authorized = message.guild.roles.find(r => r.name.toLowerCase().match(new RegExp(/auth(orized)?|member|мембер|участник|человек|граждан(е|ин)/)))
-if(!authorized) {await message.channel.stopTyping(); return message.reply('роль не нашлась :(')}
+if(!authorized) {await message.channel.stopTyping(); return message.reply('роль не нашлась :( Создайте одну из ролей и поставьте её ниже самой высокой роли бота: member, человек, участник, гражданин и пр.')}
 else authorized = authorized.id
 if(!message.author.bot && (['verify', 'verification', 'верифи', 'верификация'].includes(message.channel.name) || [/*some ids*/'561921259429167117'].includes(message.channel.id))){
 let bg = await Comp.jimp.read("https://santehlux.by/upload/iblock/1a3/white_textile.jpg"),
