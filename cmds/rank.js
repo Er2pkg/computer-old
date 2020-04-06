@@ -36,7 +36,7 @@ await bg
 //.print(fnt, 245, 0, 'money:$' + (row.money.toString().length > 3?row.money.toString().slice(0, -(rpr.money.toString().length - 3)) + 'K':row.money))
 .getBuffer(Comp.jimp.MIME_PNG, async(err, buff) => {
 await message.channel.stopTyping();
-message.channel.send('Made for ' + Math.ceil((Date.now() - timer) / 1000) + ' seconds ', {files: [await new ErtuAPI.Discord.Attachment(buff, 'rank.png')]})})})})})})})})}
+message.channel.send('Made for ' + Math.ceil((Date.now() - timer) / 1000) + ' seconds ', {files: [await new Comp.Discord.Attachment(buff, 'rank.png')]})})})})})})})})}
 Comp.con.query(`SELECT * FROM xp WHERE id = ${user.id}`, (err, rows) => {
 if(rows.length < 1) return message.reply(ph[0])
 if(!['prev', 'preview'].includes(message.args[0])) rcard(rows[0], Comp.xpFormule(rows[0].lvl) / 100 * 7, Date.now())
