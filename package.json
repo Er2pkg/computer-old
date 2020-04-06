@@ -8,6 +8,7 @@
   "dependencies": {
     "@megavasiliy007/sdc-api": "github:MegaVasiliy007/sdc-api",
     "canvas-constructor": "^3.2.0",
+    "canvas": "^2.6.1",
     "child_process": "^1.0.2",
     "discord.js": "^11.6.3",
     "express": "^4.17.1",
