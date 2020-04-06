@@ -12,7 +12,7 @@ module.exports.run = async (message, ph) => {
 let user
 if(message.args[0]) user = Comp.client.users.get(message.args[0]) || message.mentions.users.first()
 if(!user) user = message.author
-const rcard = (row, length timer) => {
+const rcard = (row, length, timer) => {
 await message.channel.startTyping()
 const {Canvas} = require('canvas-constructor')
 Comp.jimp.read(user.avatarURL).then(async avatar => {
