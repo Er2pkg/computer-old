@@ -33,7 +33,7 @@ await bg
 .print(fnt, 255, 146, user.tag)
 .print(fnt, 655, 0, 'lvl: ' + row.lvl)
 .print(fnt, 350, 50, row.xp + '/' + Comp.xpFormule(row.lvl) + ' xp')
-.print(fnt, 245, 0, 'money:$' + (row.money.toString().length > 3?row.money.toString().slice(0, -(rpr.money.toString().length - 3)) + 'K':row.money))
+//.print(fnt, 245, 0, 'money:$' + (row.money.toString().length > 3?row.money.toString().slice(0, -(rpr.money.toString().length - 3)) + 'K':row.money))
 .getBuffer(Comp.jimp.MIME_PNG, async(err, buff) => {
 await message.channel.stopTyping();
 message.channel.send('Made for ' + Math.ceil((Date.now() - timer) / 1000) + ' seconds ', {files: [await new ErtuAPI.Discord.Attachment(buff, 'rank.png')]})})})})})})})})}
