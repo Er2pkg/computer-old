@@ -16,7 +16,7 @@ if(Comp.unxp.has(message.author.id) || message.channel.id == '693046024146518107
 Comp.client.stats.msgs++
 Comp.con.query(`SELECT * FROM xp WHERE id = ${message.author.id}`, (err, rows) => {
 if(err) console.log(err)
-if(rows.length < 1) Comp.con.query(`INSERT INTO xp (id, xp, lvl) VALUES (${message.author.id}, ${message.xp}, 1)`)
+if(rows.length < 1) Comp.con.query(`INSERT INTO xp (id, xp, lvl, bg) VALUES (${message.author.id}, ${message.xp}, 1, 'https://cdn.mee6.xyz/plugins/levels/cards/backgrounds/4cc81b4c-c779-4999-9be0-8a3a0a64cbaa.jpg')`)
 else {Comp.con.query(`UPDATE xp SET xp = ${rows[0].xp + message.xp} WHERE id = ${message.author.id}`)
 if(message.xp <= 0 && rows[0].lvl >= 1) Comp.con.query(`UPDATE xp SET xp = ${rows[0].xp+message.xp} WHERE id = ${message.author.id}`)
 if(message.xp <= 0 && rows[0].xp + message.xp <= 0 && rows[0].lvl > 1) return Comp.con.query(`UPDATE xp SET xp = ${Comp.xpFormule(rows[0].lvl-1)+message.xp}, lvl = ${rows[0].lvl-1} WHERE id = ${message.author.id}`)

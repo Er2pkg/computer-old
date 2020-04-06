@@ -1,4 +1,4 @@
-﻿module.exports.info = {
+module.exports.info = {
 name: 'ранк',
 engname: 'rank',
 regex: '/[рт][ау]н[кг]/',
@@ -8,14 +8,37 @@ engargs: '[member]',
 desc: 'Показать свой или чужой XP',
 engdesc: 'Show your or alien XP',
 }
-module.exports.run = (message, ph) => {
-message.channel.startTyping()
+module.exports.run = async (message, ph) => {
 let user
 if(message.args[0]) user = Comp.client.users.get(message.args[0]) || message.mentions.users.first()
 if(!user) user = message.author
+const rcard = (row, length timer) => {
+await message.channel.startTyping()
+const {Canvas} = require('canvas-constructor')
+Comp.jimp.read(user.avatarURL).then(async avatar => {
+await Comp.jimp.read('./assets/avatarmask.png').then(async mask => {
+await avatar.resize(200, 200).mask(mask, 0, 0)
+await Comp.jimp.read('./assets/bgmask.png').then(async bgmask => {
+await Comp.jimp.read(row.bg).then(async bg => {
+await bg.resize(934, 282).blur(5).mask(bgmask)
+await Comp.jimp.read(new Canvas(700, 20).setColor('#' + bg.getPixelColor(96, 100).toString(16).slice(0, -2)).addRect(0, 0, Math.ceil(length), 20).toBuffer()).then(async bar => {
+await Comp.jimp.read('./assets/xpmask.png').then(async xpmask => await bar.mask(xpmask.resize(700, 20), 0, 0))
+await bar.resize(634, 40); if(user.id == Comp.owners.stalin) await Comp.jimp.read('./assets/staff.png').then(async sicon => await bg.composite(sicon, 55, 5))
+//govnokod
+if(user.presence.status === 'online') await Comp.jimp.read('./assets/online.png').then(async online => await avatar.composite(online, 141, 151)); if(user.presence.status === 'idle') await Comp.jimp.read('./assets/idle.png').then(async idle => await avatar.composite(idle, 141, 151)); if(user.presence.status === 'offline') await Comp.jimp.read('./assets/invisible.png').then(async offline => await avatar.composite(offline, 141, 151)); if(user.presence.status === 'dnd') await Comp.jimp.read('./assets/dnd.png').then(async dnd => await avatar.composite(dnd, 141, 151))
+await Comp.jimp.loadFont('./fonts/uni-sans-heavy-64-white.fnt').then(async fnt => {
+await bg
+.composite(avatar, 50, 50)
+.composite(bar, 255, 210)
+.print(fnt, 255, 146, user.tag)
+.print(fnt, 655, 0, 'lvl: ' + row.lvl)
+.print(fnt, 350, 50, row.xp + '/' + (5 * (rlvl ^ 2) + 50 * rlvl + 100) + ' xp')
+.print(fnt, 245, 0, 'money:$' + (row.money.toString().length > 3?row.money.toString().slice(0, -(rpr.money.toString().length - 3)) + 'K':row.money))
+.getBuffer(Comp.jimp.MIME_PNG, async(err, buff) => {
+await message.channel.stopTyping();
+message.channel.send('Made for ' + Math.ceil((Date.now() - timer) / 1000) + ' seconds ', {files: [await new ErtuAPI.Discord.Attachment(buff, 'rank.png')]})})})})})})})})}
 Comp.con.query(`SELECT * FROM xp WHERE id = ${user.id}`, (err, rows) => {
-message.channel.stopTyping()
 if(rows.length < 1) return message.reply(ph[0])
-message.channel.send(`XP: ${rows[0].xp}/${Comp.xpFormule(rows[0].lvl)}\n${ph[1]+rows[0].lvl}`)
+if(!['prev', 'preview'].includes(message.args[0])) rcard(rows[0], (rpr.xp / ((5 * (rpr.level ^ 2) + 50 * rpr.level + 100) / 100)) * 7, Date.now())
+else rcard({bg: 'https://cdn.mee6.xyz/plugins/levels/cards/backgrounds/4cc81b4c-c779-4999-9be0-8a3a0a64cbaa.jpg', money: 228000, lvl: 12, xp: 769}, ((769 / ((5 * (12 ^ 2) + 50 * 12 + 100) / 100)) * 7), Date.now())
 })
-}
