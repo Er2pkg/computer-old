@@ -2,6 +2,12 @@ module.exports.run = () => {
 
 console.log('Запуск клиента...')
 
+//SDC
+Comp.SDC = require("@megavasiliy007/sdc-api")
+Comp.SDC = new Comp.SDC(process.env.SDCtoken)
+delete process.env.SDCtoken
+Comp.SDC.setAutoPost(Comp.client)
+
 Comp.client.prefixes = ['товарищ', 'таварищ', 'таварищь', 'товарищь', `<@${Comp.client.user.id}>`, 'comrade', 'comrad', 'c.', 'к.']
 Comp.client.user.setActivity(`${Comp.client.prefixes[0]} помогай | ЭВМ им. Сталина.`)
 
