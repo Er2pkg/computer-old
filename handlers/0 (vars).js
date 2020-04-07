@@ -6,7 +6,7 @@ console.log('Инициализация переменных...')
 Array.prototype.has = function(int) {return this.find(i => i == int)}
 
 Comp.permissions = {
-FLAGS = {
+FLAGS: {
   CREATE_INSTANT_INVITE: 1 << 0,
   KICK_MEMBERS: 1 << 1,
   BAN_MEMBERS: 1 << 2,
