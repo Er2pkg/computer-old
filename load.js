@@ -10,25 +10,23 @@ this.fs.readdir('./'+type, (err, data) => {
 console.log('Starting', type)
 let i = 0
 if(err) throw err
-if(type == 'modules') data.forEach(module => {this.modules.push({name: module.slice(0, -3), path: './modules/'+module, run: () => require('./modules/'+module).run() }); return this.modules.forEach(m => m.run())})
-else data.forEach(handler => {
-if(handler.startsWith('r')) 
+data.forEach(d => {
+if(type == 'handlers' && d.startsWith('r')) 
 this.msghandlers.push({
-name: handler.slice(1, -3),
-path: './handlers/'+handler,
-run: message => require('./handlers/'+handler).run(message)
+name: d.slice(1, -3),
+path: './'+type+'/'+d,
+run: message => require('./'+type+'/'+d).run(message)
 }),
-console.log('Loaded message handler', handler.slice(1, -3)), i++
-if(handler.startsWith('-') || handler.startsWith('r')) return
-if(!handler.startsWith('0'))
+console.log('Loaded message handler', d.slice(1, -3)), i++
+if(d.startsWith('-') || d.startsWith('r')) return
+if(!d.startsWith('0'))
 i++,
-console.log('Loaded handler', handler.slice(0, -3).split(' ')[0], handler.slice(0, -3).split(' ')[1])
-this.handlers.push({
-name: handler.slice(0, -3),
-path: './handlers/'+handler,
-run: () => require('./handlers/'+handler).run()
-})
-}); if(type == 'handlers') {console.log('Loaded', i, 'handlers'); this.handlers.forEach(h => h.run())}
-}))
-}}
+console.log('Loaded', type.slice(0, -1), d.slice(0, -3))
+eval(`this.${type}.push({
+name: d.slice(0, -3),
+path: './'+type+'/'+d,
+run: () => require('./'+type+'/'+d).run()
+})`)
+}); console.log('Loaded', i, type); eval(`this.${type}.forEach(h => h.run())`)
+}))}}
 global.Comp = new Comp()
