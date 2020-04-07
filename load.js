@@ -22,11 +22,11 @@ if(d.startsWith('-') || d.startsWith('r')) return
 if(!d.startsWith('0'))
 i++,
 console.log('Loaded', type.slice(0, -1), d.slice(0, -3))
-eval(`this.${type}.push({
+this[type].push({
 name: d.slice(0, -3),
 path: './'+type+'/'+d,
 run: () => require('./'+type+'/'+d).run()
-})`)
-}); console.log('Loaded', i, type); eval(`this.${type}.forEach(h => h.run())`)
+})
+}); console.log('Loaded', i, type); this[type].forEach(h => h.run())
 }))}}
 global.Comp = new Comp()
