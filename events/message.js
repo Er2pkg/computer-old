@@ -36,6 +36,7 @@ if(!prefix) return
 else message.xp = 0
 
 message.args = message.content.slice(prefix.length).trim().split(/ +/g)
+message.flags = message.args.filter(i => i.match(/--(\w{1,})/gi)).map(i => i.slice(2))
 message.command = message.args.shift().toLowerCase()
 
 if(!message.command) {

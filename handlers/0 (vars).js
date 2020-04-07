@@ -2,6 +2,8 @@ module.exports.run = () => {
 
 console.log('Инициализация переменных...')
 
+Array.prototype.has = string => this.find(i => i == string)
+
 Comp.db = {
 host: process.env.DBhost,
 user: process.env.DBuser,
