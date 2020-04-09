@@ -43,8 +43,8 @@ Comp.con.query(`SELECT * FROM zamuchen WHERE guild=${g.id} AND id=${m.id}`, (err
 let inmute = (rows&&rows[0]?rows[0].inmute:0)
 if(inmute === 1 && rows && rows[0] && rows[0].unmute_time && rows[0].unmute_time <= Date.now()) inmute = 0, Comp.con.query(`DELETE FROM zamuchen WHERE id=${m.id} AND guild=${g.id}`), console.log('unmute')
 if(inmute === 0 && rows && rows[0] && rows[0].unmute_time && rows[0].unmute_time > Date.now()) inmute = 1, Comp.con.query(`UPDATE zamuchen SET inmute=1, reason='${rows[0].reason?rows[0].reason+'\nauto fix':'auto fix'}', mute_time=${Date.now()} WHERE id=${m.id} AND guild=${g.id}`), console.log('mute')
-if(inmute == 0 && m.roles.has(role.id)) m.removeRole(role.id), console.log('remove role')
-if(inmute == 1 && !m.roles.has(role.id)) m.addRole(role.id), console.log('add role') 
+if(inmute == 0 && m.roles.has(role.id)) m.removeRole(role.id).catch(() => console.log('fuck')), console.log('remove role')
+if(inmute == 1 && !m.roles.has(role.id)) m.addRole(role.id).catch(() => console.log('fuck')), console.log('add role') 
 })}))
 Comp.client.users.forEach(u => u.bot?'':Comp.con.query(`SELECT * FROM pred WHERE id = ${u.id}`, (err, rows) => {
 if(rows.length < 1) Comp.con.query(`INSERT INTO pred (id) VALUES (${u.id})`)
