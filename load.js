@@ -5,6 +5,8 @@ this.handlers = []
 this.msghandlers = []
 this.modules = []
 this.ltypes = ['handlers', 'modules']
+this.devmode = false
+if(['true', 'yes', '1'].includes(process.env.DEV)) this.devmode = true, console.log('DEV MODE')
 this.ltypes.forEach(type =>
 this.fs.readdir('./'+type, (err, data) => {
 console.log('Starting', type)

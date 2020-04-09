@@ -4,14 +4,14 @@ console.log('Запуск модуля интервалов...')
 
 Comp.cmdPH = setInterval(() => Comp.client.stats.cmds.perHour = 0, 3600000)
 
-Comp.RS = setInterval(() => {
+Comp.devmode?console.log('Random status skipping'):Comp.RS = setInterval(() => {
 let i = 0,
 status = [`ЭВМ им. Сталина.`, `${Comp.declOfNum(Comp.client.stats.users.users, ['товарищ', 'товарища', 'товарищей'], 1)}`]
 if(Comp.client.user.presence.game.name.includes(`${Comp.client.prefixes[0]} помогай | ${status[0]}`)) i = 1
 Comp.client.user.setActivity(`${Comp.client.prefixes[0]} помогай | ` + status[i], {type: 'PLAYING'})
 }, 5000)
 
-Comp.cStat = setInterval(() =>
+Comp.devmode?console.log('Auto status skipping'):Comp.cStat = setInterval(() =>
 Comp.client.channels.get('695980819650576384').fetchMessage('695981096202010654').then(msg => 
 msg.edit(new Comp.Discord.RichEmbed()
 .setTitle(`Бот ${Comp.client.user.username}`)
@@ -33,7 +33,7 @@ msg.edit(new Comp.Discord.RichEmbed()
 //.addField(`Последний коммит`, '...', true)
 .setColor('00fff0'))), 15000)
 
-Comp.intDB = setInterval(() => {
+Comp.devmode?console.log('DB interval skipping'):Comp.intDB = setInterval(() => {
 Comp.client.stats.users = {users: Comp.client.users.filter(u => !u.bot).size, bots: Comp.client.users.filter(u => u.bot).size}
 Comp.client.guilds.forEach(g =>
 g.members.forEach(m => {

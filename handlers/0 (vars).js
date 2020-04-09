@@ -3,7 +3,7 @@ module.exports.run = () => {
 console.log('Инициализация переменных...')
 
 //Отсталые, стрелки не саппортит :-1:
-Array.prototype.has = function(int) {return this.find(i => i == int)}
+Array.prototype.has = function(int) {return int?(this.find(i => i == int)?true:false):this.length > 0}
 
 Comp.permissions = {
 FLAGS: {
@@ -60,7 +60,7 @@ Comp.warnedFlood = new Set()
 Comp.unxp = new Set()
 Comp.muted = '561165692896804895'
 
-Comp.client.login(process.env.ClientToken).then(() => delete process.env.ClientToken).catch()
+Comp.client.login(process.env.ClientToken).then(() => delete process.env.ClientToken).catch(() => console.log('CLIENT AUTH FAILED'))
 
 Comp.owners = {
 'stalin': '544031928358273045',

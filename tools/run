@@ -1,3 +1,0 @@
-#! /bin/sh
-trap 'echo "\nExecution Error: Exit"; exit 1' 1 2 3 8 9 15
-node load.js

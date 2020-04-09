@@ -9,15 +9,15 @@ Comp.client.guilds.forEach(async guild => {
     if (matches)
         matches.forEach(match => {
             if (!Comp.invites.find(m => m.guild == message.guild.id && m.code == match.match(/discord(app\.com\/invite|.\w{2})\/(\w{3,})/i)[2])) {
-            message.delete()
+            message.delete().catch(() => message.channel.send('Не могу удалить сообщение'))
             message.xp = -30
-if(message.glang === 1) message.author.send('```' + `Товарищ ${message.guild.member(message.author).displayName}, реклама запрещена.` + '```')
-else message.author.send('```' + `Comrade ${message.member.displayName}, ads not allowed.` + '```')
+if(message.glang === 1) message.author.send('```' + `Товарищ ${message.guild.member(message.author).displayName}, реклама запрещена.` + '```').catch(() => null)
+else message.author.send('```' + `Comrade ${message.member.displayName}, ads not allowed.` + '```').catch(() => null)
 Comp.con.query(`SELECT * FROM pred WHERE id = ${message.author.id}`, (err, rows) => {
 Comp.send(Comp.client.users.get(Comp.owners.stalin), '```' + `Автор: товарищ ${(message.guild.member(message.author)?message.guild.member(message.author).displayName:message.author.tag)}\nСодержание: ${match}` + '```' + `${rows[0].invite + 1}/10`)
 if(rows[0].invite >= 9){
 if(!message.member.bannable || message.author.id == Comp.owners.lenin) Comp.con.query(`UPDATE pred SET invite = 0 WHERE id = ${message.author.id}`)
-if(message.member.bannable && message.author.id!== Comp.owners.lenin) message.member.ban('Оставляет инвайты, товарищи Ленин и Сталин.')
+if(message.member.bannable && message.author.id!== Comp.owners.lenin) message.member.ban('Оставляет инвайты...')
 } else Comp.con.query(`UPDATE pred SET invite = ${rows[0].invite+1}  WHERE id = ${message.author.id}`)
 })}})})
 
@@ -50,8 +50,8 @@ let zamutil = 0
             if(rows.length < 1) zamutil==0?(Comp.con.query(`INSERT INTO zamuchen (id, guild, inmute, reason, mute_time, unmute_time) VALUES (${message.author.id}, ${message.guild.id}, 1, 'flood', ${Date.now()}, ${Date.now()+3600000})`), zamutil = 1):''
                     else Comp.con.query('UPDATE zamuchen SET imute=1, reason=\'flood\', mute_time='+Date.now()+', unmute_time='+(Date.now()+3600000)+' WHERE id='+message.author.id+', guild='+message.guild.id)
 })
-                    if(message.glang === 1) message.author.send('Доигрался? Ты был наказан на час.')
-                    else message.author.send('All ok? You will muted on 1 hour.')
+                    if(message.glang === 1) message.author.send('Доигрался? Ты был наказан на час.').catch(() => null)
+                    else message.author.send('All ok? You will muted on 1 hour.').catch(() => null)
 Comp.con.query(`SELECT * FROM pred WHERE id=${message.author.id}`, (err, rows) => {
                    Comp.send(Comp.client.users.get(Comp.owners.stalin), 'Товарищ '+(message.guild.member(message.author)?message.guild.member(message.author).displayName:message.author.tag)+ ' спамит. '+(rows[0].spam + 1)+'/10')
 if(rows[0].spam >= 9)

@@ -6,10 +6,11 @@ console.log('Запуск клиента...')
 Comp.SDC = require("@megavasiliy007/sdc-api")
 Comp.SDC = new Comp.SDC(process.env.SDCtoken)
 delete process.env.SDCtoken
-Comp.SDC.setAutoPost(Comp.client)
+if(Comp.devmode) console.log('SDC monitoring skipping')
+else Comp.SDC.setAutoPost(Comp.client)
 
 Comp.client.prefixes = ['товарищ', 'таварищ', 'таварищь', 'товарищь', `<@${Comp.client.user.id}>`, 'comrade', 'comrad', 'c.', 'к.', 'кю']
-Comp.client.user.setActivity(`${Comp.client.prefixes[0]} помогай | ЭВМ им. Сталина.`)
+Comp.devmode?'':Comp.client.user.setActivity(`${Comp.client.prefixes[0]} помогай | ЭВМ им. Сталина.`)
 
 Comp.client.stats = {cmds: {total: 0, perHour: 0}, users: {users: Comp.client.users.filter(u => !u.bot).size, bots: Comp.client.users.filter(u => u.bot).size}, msgs: 0}
 Comp.client.glangs = []
