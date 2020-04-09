@@ -67,6 +67,7 @@ Comp.owners = {
 'lenin': '441954631539490857',
 }
 
+Comp.pS = (c, page, onOne, j) => c.slice(((page - 1) * onOne), (onOne) + ((page - 1) * onOne)).join(j?j:'\n')
 Comp.xpFormule = lvl => (5 * (lvl ^ 2) + 50 * lvl + 100)
 Comp.send = (id, message) => id.send(message)
 Comp.addCommas = int => `${int.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`
