@@ -6,6 +6,7 @@ this.inmute = obj.inmute || 0
 this.reason = obj.reason || 'no reason'
 this.mute_time = obj.mute_time || null
 this.unmute_time = obj.unmute_time || null
+this._deleted = false
 }
 
 get vals() {

@@ -4,6 +4,7 @@ this.user = obj.user
 this.id = obj.id
 this.name = obj.name
 this.text = obj.text
+this._deleted = false
 }
 
 get vals() {

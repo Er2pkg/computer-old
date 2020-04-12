@@ -4,6 +4,7 @@ this.id = obj.id
 this.yes = obj.yes || 0
 this.reason = obj.reason || ''
 this.time = obj.time || 0
+this._deleted = false
 }
 
 get vals() {

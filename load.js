@@ -1,5 +1,6 @@
 class Comp {
 constructor() {
+this.beta = true
 this.Discord = require("discord.js")
 this.client = new this.Discord.Client({disableEveryone: true})
 this.fs = require('fs')

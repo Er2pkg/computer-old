@@ -1,7 +1,7 @@
 module.exports.run = guild => {
 if(!guild.roles.find(r => r.name === 'Muted')) guild.createRole({name: 'Muted', permissions: 0})
-Comp.con.query(`SELECT * FROM lang WHERE id = ${guild.id}`, (err, rows) => {
-if(rows.length < 1) { Comp.con.query(`INSERT INTO lang (id, lang) VALUES (${guild.id}, 1)`)
+const row = Comp.DB.glangs.get(guild.id)
+if(!row) { Comp.con.qu
 Comp.client.glangs.push({gid: guild.id, lang: 1})
 }
 })

@@ -9,8 +9,8 @@ desc: 'Анмут',
 engdesc: 'Unmute',
 private: true,
 }
-module.exports.run = message => 
-Comp.con.query(`SELECT * FROM zamuchen WHERE id = ${message.args[0]} AND guild=${message.guild.id}`, (err, rows) => {
-if(rows.length < 1) return message.reply('-_-')
-else {Comp.con.query(`DELETE FROM zamuchen WHERE id=${message.args[0]} AND guild=${message.guild.id}`); message.reply('ok')}
-})
+module.exports.run = message => {
+const row = Comp.DB.mutes.get(message.guild.id+'_'+message.author.id)
+if(!row) return message.reply('-_-')
+else {row._deleted = true; message.reply('ok')}
+}

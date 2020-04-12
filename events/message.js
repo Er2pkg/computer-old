@@ -1,7 +1,7 @@
 module.exports.run = message => {
 if (!message.guild || message.author.bot) return
 
-const tglang = Comp.client.glangs.find(l => l.gid === message.guild.id)
+const tglang = Comp.DB.glangs.get(message.guild.id)
 message.glang = tglang?tglang.lang:1
 message.lang = message.glang==1?'ru':'en'
 message.xp = Comp.random(15, 25)
@@ -14,23 +14,22 @@ const prefix = Comp.client.prefixes.find(p => message.content.toLowerCase().star
 if(!prefix) {
 if(Comp.unxp.has(message.author.id) || message.channel.id == '693046024146518107') return
 Comp.client.stats.msgs++
-Comp.con.query(`SELECT * FROM xp WHERE id = ${message.author.id}`, (err, rows) => {
-if(err) console.log(err)
-if(rows.length < 1) Comp.con.query(`INSERT INTO xp (id, xp, lvl, bg) VALUES (${message.author.id}, ${message.xp}, 1, 'https://cdn.mee6.xyz/plugins/levels/cards/backgrounds/4cc81b4c-c779-4999-9be0-8a3a0a64cbaa.jpg')`)
-else {Comp.con.query(`UPDATE xp SET xp = ${rows[0].xp + message.xp} WHERE id = ${message.author.id}`)
-if(message.xp <= 0 && rows[0].lvl >= 1) Comp.con.query(`UPDATE xp SET xp = ${rows[0].xp+message.xp} WHERE id = ${message.author.id}`)
-if(message.xp <= 0 && rows[0].xp + message.xp <= 0 && rows[0].lvl > 1) return Comp.con.query(`UPDATE xp SET xp = ${Comp.xpFormule(rows[0].lvl-1)+message.xp}, lvl = ${rows[0].lvl-1} WHERE id = ${message.author.id}`)
-if(rows[0].xp + message.xp >= Comp.xpFormule(rows[0].lvl)) {
+const row = Comp.DB.xp.get(message.author.id)
+if(!row) Comp.DB.xp.set(message.author.id, new Comp.classes.XP({id: message.author.id, xp: message.xp}))
+else {row.xp = row.xp + message.xp
+if(message.xp <= 0 && row.lvl >= 1) row.xp = row.xp+message.xp
+if(message.xp <= 0 && row.xp + message.xp <= 0 && row.lvl > 1) return row.xp = Comp.xpFormule(row.lvl-1)+message.xp, row.lvl = row.lvl-1
+if(row.xp + message.xp >= Comp.xpFormule(row.lvl)) {
 if (message.lang == 'ru') message.channel.send(new Comp.Discord.MessageEmbed()
 .setTitle("У вас новый уровень!")
 .setColor('00fff0')
-.addField("Уровень", rows[0].lvl + 1)).then(msg => msg.delete(5500))
+.addField("Уровень", row.lvl + 1)).then(msg => msg.delete(5500))
 else message.channel.send(new Comp.Message.RichEmbed()
 .setTitle("You get a new level!")
 .setColor('00fff0')
-.addField("Level", rows[0].lvl + 1)).then(msg => msg.delete(5500))
-Comp.con.query(`UPDATE xp SET xp = 0, lvl = ${rows[0].lvl + 1} WHERE id = ${message.author.id}`)
-}}})}
+.addField("Level", row.lvl + 1)).then(msg => msg.delete(5500))
+row.xp = 0, row.lvl = row.lvl + 1
+}}}
 
 if(!prefix) return
 else message.xp = 0
@@ -73,14 +72,8 @@ if(!lag.match(/ru(s)?(sian)?|ру(с)?(ский)?|en(g)?(lish)?|ан(г)?(лий
 else {
 if(lag.match(/ru(s)?(sian)?|ру(с)?(ский)?/)) lag = 1
 else lag = 2
-Comp.con.query(`SELECT * FROM lang WHERE id = ${message.guild.id}`, (err, rows) => {
-if(err) console.log(err)
-let sql
-sql = `UPDATE lang SET lang = ${lag} WHERE id = ${message.guild.id}`
-Comp.con.query(sql)
-Comp.client.glangs.find(l => l.gid === message.guild.id).lang = lag
-if(lag === 1) message.reply('установлен :flag_ru: язык')
+Comp.DB.glangs.get(message.guild.id).lang = lag
+if(lag == 1) message.reply('установлен :flag_ru: язык')
 else message.reply('language will updated to :flag_us:')
-})
 }}
 }

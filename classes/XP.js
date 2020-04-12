@@ -5,6 +5,7 @@ this.xp = obj.xp || 0
 this.lvl = obj.lvl || 1
 this.bg = obj.bg || 'https://cdn.mee6.xyz/plugins/levels/cards/backgrounds/4cc81b4c-c779-4999-9be0-8a3a0a64cbaa.jpg'
 this.money = obj.money || 0
+this._deleted = false
 }
 
 get vals() {

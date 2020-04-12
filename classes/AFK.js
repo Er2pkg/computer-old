@@ -3,6 +3,7 @@ constructor(obj) {
 this.id = obj.id
 this.yes = obj.yes || 0
 this.reason = obj.reason
+this._deleted = false
 }
 
 get vals() {

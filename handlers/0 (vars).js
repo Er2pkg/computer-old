@@ -57,7 +57,6 @@ Comp.fs = require('fs')
 Comp.locales = require('../locales.json')
 Comp.warnedFlood = new Set()
 Comp.unxp = new Set()
-Comp.muted = '561165692896804895'
 
 Comp.client.login(process.env.ClientToken).then(() => delete process.env.ClientToken).catch(() => console.log('CLIENT AUTH FAILED'))
 

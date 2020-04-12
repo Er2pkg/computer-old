@@ -18,8 +18,11 @@ engdesc: 'Notes...',
 regex: '/[щз][ао]мь?[еэ]тк[аи]/',
 engregex: '/nou?[td]e?s?/',
 }
-module.exports.run = (message, ph) =>
-Comp.con.query(`SELECT * FROM notes WHERE user=${message.author.id}`, (err, rows) => {
+module.exports.run = (message, ph) => {
+const rows = Comp.DB.notes.filter(i => i.guild == i.user == message.author.id)
+const row = rows[0]
+if(!row) {Comp.DB.mutes.set(message.guild.id+'_'+message.author.id, new Comp.classes.Mute({guild: message.guild.id, id: message.author.id, inmute: 1, reason: (message.args.slice(2).join(' ') || 'no reason'), mute_time: Date.now(), unmute_time: (Date.now()+parseInt(message.args[1])) }))
+
 let find
 message.channel.startTyping()
 if(!message.args[0] || (message.args[0] && (['помощь', 'помогай', 'помоги', 'help'].includes(message.args[0].toLowerCase()) || !methods.includes(message.args[0].toLowerCase())))) {message.channel.stopTyping(); return message.channel.send(noteHelp[message.lang]);}
@@ -27,7 +30,7 @@ switch(message.args[0].toLowerCase()) {
 case methods[0]:
 case methods[1]:
 message.channel.stopTyping()
-if(rows.length < 1) return message.reply(ph[0])
+if(!row) return message.reply(ph[0])
 else message.reply('\n'+rows.map(i => `${i.id} (${i.name}...)`).join('\n'))
 break
 case methods[2]:
@@ -73,4 +76,4 @@ if(!message.args[2]) return message.reply(ph[9])
 Comp.con.query(`UPDATE notes SET name='${message.args.slice(2).join(' ').replace(/\'/g, '\\\'').slice(0,10)}', text='${message.args.slice(2).join(' ').replace(/\'/g, '\\\'')}' WHERE user='${message.author.id}' AND id=${find.id}`)
 message.channel.send(ph[10]+find.id+ph[11])
 break
-}})
+}}

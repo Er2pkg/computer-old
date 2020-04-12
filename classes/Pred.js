@@ -4,6 +4,7 @@ this.id = obj.id
 this.invite = obj.invite || 0
 this.spam = obj.spam || 0
 this.notRules = obj.notRules || 0
+this._deleted = false
 }
 
 get vals() {

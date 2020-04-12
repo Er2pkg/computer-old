@@ -1,7 +1,7 @@
 module.exports.info = {
 name: 'шелл',
 engname: 'shell',
-regex: '/шел(л)?/',
+regex: '/шелл/',
 engregex: '/shell/',
 args: '<код товарища Сталина>',
 engargs: '<code of comrade Stalin>',
