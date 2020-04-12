@@ -16,7 +16,7 @@ const rcard = async (row, length, timer) => {
 console.warn('rcard is running')
  message.channel.startTyping()
 const {Canvas} = require('canvas-constructor')
-Comp.jimp.read(user.avatarURL()).then(async avatar => {
+Comp.jimp.read(user.avatarURL({format: 'png'})).then(async avatar => {
 console.warn('avatar loaded')
 await Comp.jimp.read('./assets/avatarmask.png').then(async mask => {
 console.warn('avatar mask is loaded')
