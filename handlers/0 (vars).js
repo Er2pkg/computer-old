@@ -49,9 +49,8 @@ user: process.env.DBuser,
 password: process.env.DBpass,
 database: process.env.DBuser,
 }
+
 Comp.os = require('os')
-Comp.Discord = require("discord.js")
-Comp.client = new Comp.Discord.Client({disableEveryone: true})
 Comp.mysql = require('mysql2')
 Comp.jimp = require('jimp')
 Comp.fs = require('fs')

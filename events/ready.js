@@ -3,16 +3,16 @@ module.exports.run = () => {
 console.log('Запуск клиента...')
 
 //SDC
-Comp.SDC = require("@megavasiliy007/sdc-api")
+/*Comp.SDC = require("@megavasiliy007/sdc-api")
 Comp.SDC = new Comp.SDC(process.env.SDCtoken)
 delete process.env.SDCtoken
 if(Comp.devmode) console.log('SDC monitoring skipping')
-else Comp.SDC.setAutoPost(Comp.client)
+else Comp.SDC.setAutoPost(Comp.client)*/
 
-Comp.client.prefixes = ['товарищ', 'таварищ', 'таварищь', 'товарищь', `<@${Comp.client.user.id}>`, 'comrade', 'comrad', 'c.', 'к.', 'кю']
+Comp.client.prefixes = ['бета', 'бэта', 'бето', 'бэто', `<@${Comp.client.user.id}>`, 'beta', 'beto', 'b.', 'б.', 'бю']
 Comp.devmode?'':Comp.client.user.setActivity(`${Comp.client.prefixes[0]} помогай | ЭВМ им. Сталина.`)
 
-Comp.client.stats = {cmds: {total: 0, perHour: 0}, users: {users: Comp.client.users.filter(u => !u.bot).size, bots: Comp.client.users.filter(u => u.bot).size}, msgs: 0}
+Comp.client.stats = {cmds: {total: 0, perHour: 0}, users: {users: Comp.client.users.cache.filter(u => !u.bot).size, bots: Comp.client.users.cache.filter(u => u.bot).size}, msgs: 0}
 Comp.client.glangs = []
 Comp.client.ignores = []
 Comp.client.commands = []

@@ -21,11 +21,11 @@ else {Comp.con.query(`UPDATE xp SET xp = ${rows[0].xp + message.xp} WHERE id = $
 if(message.xp <= 0 && rows[0].lvl >= 1) Comp.con.query(`UPDATE xp SET xp = ${rows[0].xp+message.xp} WHERE id = ${message.author.id}`)
 if(message.xp <= 0 && rows[0].xp + message.xp <= 0 && rows[0].lvl > 1) return Comp.con.query(`UPDATE xp SET xp = ${Comp.xpFormule(rows[0].lvl-1)+message.xp}, lvl = ${rows[0].lvl-1} WHERE id = ${message.author.id}`)
 if(rows[0].xp + message.xp >= Comp.xpFormule(rows[0].lvl)) {
-if (message.lang == 'ru') message.channel.send(new Comp.Discord.RichEmbed()
+if (message.lang == 'ru') message.channel.send(new Comp.Discord.MessageEmbed()
 .setTitle("У вас новый уровень!")
 .setColor('00fff0')
 .addField("Уровень", rows[0].lvl + 1)).then(msg => msg.delete(5500))
-else message.channel.send(new Comp.Discord.RichEmbed()
+else message.channel.send(new Comp.Message.RichEmbed()
 .setTitle("You get a new level!")
 .setColor('00fff0')
 .addField("Level", rows[0].lvl + 1)).then(msg => msg.delete(5500))

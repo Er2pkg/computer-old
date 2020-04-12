@@ -50,10 +50,10 @@ let zamutil = 0
             if(rows.length < 1) zamutil==0?(Comp.con.query(`INSERT INTO zamuchen (id, guild, inmute, reason, mute_time, unmute_time) VALUES (${message.author.id}, ${message.guild.id}, 1, 'flood', ${Date.now()}, ${Date.now()+3600000})`), zamutil = 1):''
                     else Comp.con.query('UPDATE zamuchen SET imute=1, reason=\'flood\', mute_time='+Date.now()+', unmute_time='+(Date.now()+3600000)+' WHERE id='+message.author.id+', guild='+message.guild.id)
 })
-                    if(message.glang === 1) message.author.send('Доигрался? Ты был наказан на час.').catch(() => null)
-                    else message.author.send('All ok? You will muted on 1 hour.').catch(() => null)
+                    if(message.glang === 1) zamutil?'':message.author.send('Доигрался? Ты был наказан на час.').catch(() => null)
+                    else zamutil?'':message.author.send('All ok? You will muted on 1 hour.').catch(() => null)
 Comp.con.query(`SELECT * FROM pred WHERE id=${message.author.id}`, (err, rows) => {
-                   Comp.send(Comp.client.users.get(Comp.owners.stalin), 'Товарищ '+(message.guild.member(message.author)?message.guild.member(message.author).displayName:message.author.tag)+ ' спамит. '+(rows[0].spam + 1)+'/10')
+                   zamutilComp.send(Comp.client.users.get(Comp.owners.stalin), 'Товарищ '+(message.guild.member(message.author)?message.guild.member(message.author).displayName:message.author.tag)+ ' спамит. '+(rows[0].spam + 1)+'/10')
 if(rows[0].spam >= 9)
 if(!message.author.bannable || message.author.id === Comp.owners.lenin) Comp.con.query('UPDATE pred SET spam=0 WHERE id='+message.author.id)
 else message.member.ban('Ультра спамер'), Comp.con.query(`DELETE FROM pred WHERE id=${message.author.id}`)

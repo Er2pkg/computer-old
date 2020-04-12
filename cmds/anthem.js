@@ -11,7 +11,7 @@ if (!message.member.voiceChannel) return message.channel.send(ph[0])
 message.member.voiceChannel.join().then(connection => {
 message.channel.send(ph[1]+' <:USSR:560858037041102858>').then(msg => {
 msg.react('❌')
-const dispatcher = connection.playFile('./assets/gimn.mp3')
+const dispatcher = connection.playFile('./assets/anthem.mp3')
 dispatcher.on('end', () => {
 message.guild.me.voiceChannel.leave()
 msg.delete()
