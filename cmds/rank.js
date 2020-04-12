@@ -36,7 +36,7 @@ await bg
 .getBuffer(Comp.jimp.MIME_PNG, async(err, buff) => {
 await message.channel.stopTyping();
 message.channel.send('Made for ' + Math.ceil((Date.now() - timer) / 1000) + ' seconds ', {files: [await new Comp.Discord.MessageAttachment(buff, 'rank.png')]})})})})})})})})}
-const row = Comp.DB.xp.get(message.author.id)
+const row = Comp.DB.xp.get(user.id)
 if(!row) return message.reply(ph[0])
 if(!['prev', 'preview'].includes(message.args[0])) rcard(row, row.xp / (Comp.xpFormule(row.lvl) / 100) * 7, Date.now())
 else rcard({bg: 'https://cdn.mee6.xyz/plugins/levels/cards/backgrounds/4cc81b4c-c779-4999-9be0-8a3a0a64cbaa.jpg', money: 228000, lvl: 12, xp: 769}, ((769 / ((5 * (12 ^ 2) + 50 * 12 + 100) / 100)) * 7), Date.now())
