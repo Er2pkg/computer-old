@@ -36,14 +36,13 @@ msg.edit(new Comp.Discord.MessageEmbed()
 
 Comp.devmode?console.log('DB interval skipping'):Comp.intDB = setInterval(() => {
 Comp.client.guilds.cache.forEach(g => {
-let role = g.roles.cache.find(r => r.name.match(/[Mm]ut[ei][dt]|Замученные/))
+let role = g.roles.cache.find(r => r.name.toLowerCase().match(/(mut[ei]?)[dt]|замучен{1,}ые/))
 if(!role) return
 g.members.cache.forEach(m => {
 const row = Comp.DB.mutes.find(i => i.guild == g.id && i.id == m.id)
-if(!row) return
 let inmute = (row.inmute?row.inmute:0)
-if(inmute == 1 && row.unmute_time && row.unmute_time <= Date.now()) inmute = 0, Comp.DB.mutes.delete(g.id+'_'+m.id), console.log('unmute')
-if(inmute == 0 && row.unmute_time && row.unmute_time > Date.now()) inmute = 1, row.inmute=1, row.reason=(row.reason?row.reason+'\nauto fix':'auto fix'), row.mute_time=Date.now(), console.log('mute')
+if(inmute == 1 && row && row.unmute_time && row.unmute_time <= Date.now()) inmute = 0, Comp.DB.mutes.delete(g.id+'_'+m.id), console.log('unmute')
+if(inmute == 0 && row && row.unmute_time && row.unmute_time > Date.now()) inmute = 1, row.inmute=1, row.reason=(row.reason?row.reason+'\nauto fix':'auto fix'), row.mute_time=Date.now(), console.log('mute')
 if(inmute == 0 && m.roles.cache.has(role.id)) m.roles.remove(role.id).catch(() => console.log('fuck')), console.log('remove role')
 if(inmute == 1 && !m.roles.cache.has(role.id)) m.roles.add(role.id).catch(() => console.log('fuck')), console.log('add role') 
 })})
