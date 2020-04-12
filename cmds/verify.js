@@ -18,7 +18,7 @@ bg
 .print(fnt, Math.random() * 400, Math.random() * 200, captcha)
 .getBuffer(Comp.jimp.MIME_PNG, async (err, buff) => {
 await message.channel.stopTyping()
-        message.reply(new Comp.Discord.RichEmbed()
+        message.reply(new Comp.Discord.MessageEmbed()
             .setTitle("Верификация (Verification)")
             .setDescription("Введите капчу (Enter the captcha)")
             .addField("Попытки (Attempts)", "Всего 3 попытки (Total 3 attempts)")

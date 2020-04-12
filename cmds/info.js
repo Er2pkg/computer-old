@@ -7,7 +7,7 @@ regex: '/инфо(рмация)?/',
 engregex: '/info(rmation)?/',
 }
 module.exports.run = (message, ph) =>
-message.channel.send(new Comp.Discord.RichEmbed()
+message.channel.send(new Comp.Discord.MessageEmbed()
 .setTitle(`${ph[0]} ${Comp.client.user.tag}`)
 .setThumbnail(Comp.client.user.avatarURL)
 .addField(ph[1], `${Comp.addCommas(Math.round(Comp.client.ping))} ms`, true)
