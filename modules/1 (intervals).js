@@ -39,16 +39,15 @@ Comp.client.guilds.cache.forEach(g => {
 let role = g.roles.cache.find(r => r.name.match(/[Mm]ut[ei][dt]|Замученные/))
 if(!role) return
 g.members.cache.forEach(m => {
-Comp.con.query(`SELECT * FROM zamuchen WHERE guild=${g.id} AND id=${m.id}`, (err, rows) => {
-let inmute = (rows&&rows[0]?rows[0].inmute:0)
-if(inmute === 1 && rows && rows[0] && rows[0].unmute_time && rows[0].unmute_time <= Date.now()) inmute = 0, Comp.con.query(`DELETE FROM zamuchen WHERE id=${m.id} AND guild=${g.id}`), console.log('unmute')
-if(inmute === 0 && rows && rows[0] && rows[0].unmute_time && rows[0].unmute_time > Date.now()) inmute = 1, Comp.con.query(`UPDATE zamuchen SET inmute=1, reason='${rows[0].reason?rows[0].reason+'\nauto fix':'auto fix'}', mute_time=${Date.now()} WHERE id=${m.id} AND guild=${g.id}`), console.log('mute')
+const row = Comp.DB.mutes.find(i => i.guild == g.id && i.id == m.id)
+if(!row) return
+let inmute = (row.inmute?row.inmute:0)
+if(inmute == 1 && row.unmute_time && row.unmute_time <= Date.now()) inmute = 0, Comp.DB.mutes.delete(g.id+'_'+m.id), console.log('unmute')
+if(inmute == 0 && row.unmute_time && row.unmute_time > Date.now()) inmute = 1, row.inmute=1, row.reason=(row.reason?row.reason+'\nauto fix':'auto fix'), row.mute_time=Date.now(), console.log('mute')
 if(inmute == 0 && m.roles.cache.has(role.id)) m.roles.remove(role.id).catch(() => console.log('fuck')), console.log('remove role')
 if(inmute == 1 && !m.roles.cache.has(role.id)) m.roles.add(role.id).catch(() => console.log('fuck')), console.log('add role') 
-})})})
-Comp.client.users.cache.forEach(u => u.bot?'':Comp.con.query(`SELECT * FROM pred WHERE id = ${u.id}`, (err, rows) => {
-if(rows.length < 1) Comp.con.query(`INSERT INTO pred (id) VALUES (${u.id})`)
-}))
+})})
+Comp.client.users.cache.forEach(u => u.bot?'':Comp.DB.preds.find(i => i.id == u.id)?'':Comp.DB.preds.set(u.id, new Comp.classes.Pred({id: u.id})))
 Comp.client.users.cache.forEach(u => u.bot?'':Comp.con.query(`SELECT * FROM ignores WHERE id = ${u.id}`, (err, rows) => {
 if(rows.length < 1) Comp.con.query(`INSERT INTO ignores (id, time, reason) VALUES (${u.id}, '', '')`)
 }))}, 5000)
@@ -58,12 +57,15 @@ Object.keys(Comp.DBtables).forEach(t =>
 Comp.db.query('SELECT * FROM '+(t=='glangs'?'lang':(t=='mutes'?'zamuchen':(t=='preds'?'pred':t))), (err, rows) => {
 if(err) throw err
 rows.forEach(i => {
-let key = i.id?i.id:0, val = Comp.DBtables[t]
+let key = i.id?i.id:0
 if(['notes'].includes(t)) key = i.user+'_'+i.id
 if(['mutes'].includes(t)) key = i.guild+'_'+i.id
-const k = Comp.DB[t].get(key)
+const oldDB = Object.values(i), newDB = Object.values(Comp.DB[t].get(key)), keys = Object.keys(Comp.DB[t].first()), unmatches = []
+oldDB.forEach((o, ind) => newDB[ind] !== o?unmatches.push({index: ind, key: keys[ind]}):'')
+if(unmatches) Comp.db.query(`UPDATE ${t} SET ${unmatches.map(i => i.key+' = '+newDB[i.index]).join(', ')} WHERE id = ${i.id+(i.guild?' AND guild = '+i.guild:'')}`)
+else Comp.db.query(`INSERT INTO ${t} (${keys.join(', ')}) ${newDB.join(', ')}`)
 })}))
-}, 3000/*00*/)
+}, 300000)
 
 console.log('Модуль интервалов запущен')
 }
