@@ -40,7 +40,7 @@ let role = g.roles.cache.find(r => r.name.toLowerCase().match(/(mut[ei]?)[dt]|з
 if(!role) return
 g.members.cache.forEach(m => {
 const row = Comp.DB.mutes.find(i => i.guild == g.id && i.id == m.id)
-let inmute = (row.inmute?row.inmute:0)
+let inmute = (row && row.inmute?row.inmute:0)
 if(inmute == 1 && row && row.unmute_time && row.unmute_time <= Date.now()) inmute = 0, Comp.DB.mutes.delete(g.id+'_'+m.id), console.log('unmute')
 if(inmute == 0 && row && row.unmute_time && row.unmute_time > Date.now()) inmute = 1, row.inmute=1, row.reason=(row.reason?row.reason+'\nauto fix':'auto fix'), row.mute_time=Date.now(), console.log('mute')
 if(inmute == 0 && m.roles.cache.has(role.id)) m.roles.remove(role.id).catch(() => console.log('fuck')), console.log('remove role')
