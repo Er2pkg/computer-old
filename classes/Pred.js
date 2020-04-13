@@ -1,6 +1,6 @@
 module.exports = class Pred {
 constructor(obj) {
-this.id = obj.id || null
+this.id = obj.id?obj.id:null
 this.invite = obj.invite || 0
 this.spam = obj.spam || 0
 this.notRules = obj.notRules || 0
