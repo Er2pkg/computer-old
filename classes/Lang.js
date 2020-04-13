@@ -1,6 +1,6 @@
 module.exports = class Lang {
 constructor(obj) {
-this.id = obj.id
+this.id = obj.id || null
 this.lang = obj.lang || 1
 this._deleted = false
 }

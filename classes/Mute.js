@@ -1,7 +1,7 @@
 module.exports = class Mute {
 constructor(obj) {
-this.guild = obj.guild
-this.id = obj.id
+this.guild = obj.guild || null
+this.id = obj.id || null
 this.inmute = obj.inmute || 0
 this.reason = obj.reason || 'no reason'
 this.mute_time = obj.mute_time || null

@@ -1,6 +1,6 @@
 module.exports = class AFK {
 constructor(obj) {
-this.id = obj.id
+this.id = obj.id || null
 this.yes = obj.yes || 0
 this.reason = obj.reason
 this._deleted = false

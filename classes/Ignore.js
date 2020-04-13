@@ -1,6 +1,6 @@
 module.exports = class Ignore {
 constructor(obj) {
-this.id = obj.id
+this.id = obj.id || null
 this.yes = obj.yes || 0
 this.reason = obj.reason || ''
 this.time = obj.time || 0

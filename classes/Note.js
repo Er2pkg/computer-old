@@ -1,9 +1,9 @@
 module.exports = class Note {
 constructor(obj) {
-this.user = obj.user
-this.id = obj.id
-this.name = obj.name
-this.text = obj.text
+this.user = obj.user || null
+this.id = obj.id || 1
+this.name = obj.name || ''
+this.text = obj.text || ''
 this._deleted = false
 }
 
