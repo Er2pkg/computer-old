@@ -1,4 +1,4 @@
-module.exports.run = message => {
+module.exports.run = (message, emitted) => {
 if (!message.guild || message.author.bot) return
 
 const tglang = Comp.DB.glangs.get(message.guild.id)
@@ -11,7 +11,7 @@ Comp.msghandlers.forEach(h => h.run(message, message.glang))
 
 const prefix = Comp.client.prefixes.find(p => message.content.toLowerCase().startsWith(p))
 
-if(!prefix) {
+if(!prefix && (!emitted || (emitted && emitted == 0))) {
 if(Comp.unxp.has(message.author.id) || message.channel.id == '693046024146518107') return
 Comp.client.stats.msgs++
 const row = Comp.DB.xp.get(message.author.id)
