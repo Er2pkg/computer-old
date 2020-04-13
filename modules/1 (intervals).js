@@ -13,7 +13,7 @@ Comp.client.user.setActivity(`${Comp.client.prefixes[0]} помогай | ` + st
 }, 5000)
 
 Comp.devmode?console.log('Auto status skipping'):Comp.cStat = setInterval(() =>
-Comp.client.channels.cache.get('695980819650576384').messages.fetch('698508253205889144').then(msg => 
+Comp.client.channels.cache.get('695980819650576384').messages.fetch(Comp.beta?'698508253205889144':'695981096202010654').then(msg => 
 msg.edit(new Comp.Discord.MessageEmbed()
 .setTitle(`${Comp.beta?'[BETA] ':''}Бот ${Comp.client.user.username}`)
 .setThumbnail(Comp.client.user.avatarURL({format: 'png'}))
