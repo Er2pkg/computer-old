@@ -23,11 +23,11 @@ await Comp.jimp.read(row.bg).then(async bg => {
 await bg.resize(934, 282).blur(5).mask(bgmask)
 await Comp.jimp.read(new Canvas(700, 20).setColor('#' + bg.getPixelColor(96, 100).toString(16).slice(0, -2)).addRect(0, 0, Math.ceil(length), 20).toBuffer()).then(async bar => {
 await Comp.jimp.read('./assets/xpmask.png').then(async xpmask => await bar.mask(xpmask.resize(700, 20), 0, 0))
+await bg.brightness(-0.5)
 await bar.resize(634, 40); if(user.id == Comp.owners.stalin) await Comp.jimp.read('./assets/staff.png').then(async sicon => await bg.composite(sicon, 55, 5))
 await Comp.jimp.read('./assets/'+user.presence.status+'.png').then(async status => await avatar.composite(status, 141, 151))
 await Comp.jimp.loadFont('./fonts/uni-sans-heavy-64-white.fnt').then(async fnt => {
 await bg
-.brightness(80)
 .composite(avatar, 50, 50)
 .composite(bar, 255, 210)
 .print(fnt, 255, 146, user.tag)
