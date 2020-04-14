@@ -27,6 +27,7 @@ await bar.resize(634, 40); if(user.id == Comp.owners.stalin) await Comp.jimp.rea
 await Comp.jimp.read('./assets/'+user.presence.status+'.png').then(async status => await avatar.composite(status, 141, 151))
 await Comp.jimp.loadFont('./fonts/uni-sans-heavy-64-white.fnt').then(async fnt => {
 await bg
+.brightness(80)
 .composite(avatar, 50, 50)
 .composite(bar, 255, 210)
 .print(fnt, 255, 146, user.tag)
