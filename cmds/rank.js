@@ -21,10 +21,10 @@ await avatar.resize(200, 200).mask(mask, 0, 0)
 await Comp.jimp.read('./assets/bgmask.png').then(async bgmask => {
 await Comp.jimp.read(row.bg).then(async bg => {
 await bg.resize(934, 282).blur(5).mask(bgmask)
-await Comp.jimp.read(new Canvas(700, 20).setColor('#' + bg.getPixelColor(96, 100).toString(16).slice(0, -2)).addRect(0, 0, Math.ceil(length), 20).toBuffer()).then(async bar => {
+await Comp.jimp.read(new Canvas(700, 20).setColor('#' + (row.accent?row.accent:(bg.getPixelColor(96, 100).toString(16).slice(0, -2)))).addRect(0, 0, Math.ceil(length), 20).toBuffer()).then(async bar => {
 await Comp.jimp.read('./assets/xpmask.png').then(async xpmask => await bar.mask(xpmask.resize(700, 20), 0, 0))
 await bg.brightness(-0.5)
-await bar.resize(634, 40); if(user.id == Comp.owners.stalin) await Comp.jimp.read('./assets/staff.png').then(async sicon => await bg.composite(sicon, 55, 5))
+await bar.resize(634, 40); if(Object.values(Comp.owners).includes(user.id)) await Comp.jimp.read('./assets/staff.png').then(async sicon => await bg.composite(sicon, 55, 5))
 await Comp.jimp.read('./assets/'+user.presence.status+'.png').then(async status => await avatar.composite(status, 141, 151))
 await Comp.jimp.loadFont('./fonts/uni-sans-heavy-64-white.fnt').then(async fnt => {
 await bg
@@ -40,5 +40,5 @@ message.channel.send('Made for ' + Math.ceil((Date.now() - timer) / 1000) + ' se
 const row = Comp.DB.xp.get(user.id)
 if(!row) return message.reply(ph[0])
 if(!['prev', 'preview'].includes(message.args[0])) rcard(row, row.xp / (Comp.xpFormule(row.lvl) / 100) * 7, Date.now())
-else rcard({bg: 'https://cdn.mee6.xyz/plugins/levels/cards/backgrounds/4cc81b4c-c779-4999-9be0-8a3a0a64cbaa.jpg', money: 228000, lvl: 12, xp: 769}, ((769 / ((5 * (12 ^ 2) + 50 * 12 + 100) / 100)) * 7), Date.now())
+else rcard(new Comp.classes.XP({id: message.author.id, lvl: 12, money: 228, xp: 768}), ((768 / ((5 * (12 ^ 2) + 50 * 12 + 100) / 100)) * 7), Date.now())
 }
