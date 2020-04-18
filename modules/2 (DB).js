@@ -1,6 +1,5 @@
 module.exports.run = () => {
-console.log(Date.now(), ': :notredi:')
-Comp.DB = {}
+console.log('DB init')
 Comp.DBtables = {
 'afkshit': 'AFK',
 'ignores': 'Ignore',
@@ -10,9 +9,10 @@ Comp.DBtables = {
 'preds': 'Pred',
 'xp': 'XP',
 }
-Object.keys(Comp.DBtables).forEach(i => Comp.DB[i] = new Comp.Discord.Collection())
+Comp.DB = {}
 Comp.classes = {}
-Comp.fs.readdir('./classes', (err, data) => {if(err) throw err; data.forEach(d => Comp.classes[d.slice(0, -3)] = require('../classes/'+d))})
+Object.keys(Comp.DBtables).forEach(i => Comp.DB[i] = new Comp.Discord.Collection())
+Object.values(Comp.DBtables).forEach(i => Comp.classes[i] = require('../classes/'+i))
 Object.keys(Comp.DBtables).forEach(t =>
 Comp.db.query('SELECT * FROM '+t, (err, rows) => {
 if(err) throw err
@@ -21,6 +21,8 @@ let key = i.id?i.id:0, val = Comp.DBtables[t]
 if(['notes'].includes(t)) key = i.user+'_'+i.id
 if(['mutes'].includes(t)) key = i.guild+'_'+i.id
 Comp.DB[t].set(key, new Comp.classes[val](i))
-})}))
-console.log(Date.now(), ': :redi:')
+})
+console.log('DB loaded',t)
+}))
+console.log('DB inited')
 }
