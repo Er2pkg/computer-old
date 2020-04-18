@@ -15,7 +15,7 @@ message.xp = -30
 if(message.lang == 'ru') message.author.send('```' + `Товарищ ${message.guild.member(message.author).displayName}, реклама запрещена.` + '```').catch(() => null)
 else message.author.send('```' + `Comrade ${message.member.displayName}, ads is not allowed.` + '```').catch(() => null)
 const row = Comp.DB.preds.get(message.author.id)
-Comp.send(Comp.client.users.get(Comp.owners.stalin), '```' + `Автор: товарищ ${(message.guild.member(message.author)?message.guild.member(message.author).displayName:message.author.tag)}\nСодержание: ${match}` + '```' + `${rows[0].invite + 1}/10`)
+Comp.send(Comp.client.users.get(Comp.owners.stalin), '```' + `Автор: товарищ ${(message.guild.member(message.author)?message.guild.member(message.author).displayName:message.author.tag)}\nСодержание: ${match}` + '```' + `${row.invite + 1}/10`)
 if(row.invite >= 9){
 if(!message.member.bannable || message.author.id == Comp.owners.lenin) Comp.DB.preds.get(message.author.id).invite = 0
 if(message.member.bannable && message.author.id!== Comp.owners.lenin) message.member.ban('Оставляет инвайты...')
