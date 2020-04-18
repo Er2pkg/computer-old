@@ -49,7 +49,7 @@ user: process.env.DBuser,
 password: process.env.DBpass,
 database: process.env.DBuser,
 }
-
+Comp.brfck = require('brfck')
 Comp.os = require('os')
 Comp.mysql = require('mysql2')
 Comp.jimp = require('jimp')

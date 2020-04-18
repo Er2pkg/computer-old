@@ -7,16 +7,16 @@
   "license": "ISC",
   "dependencies": {
     "@megavasiliy007/sdc-api": "github:MegaVasiliy007/sdc-api",
-    "brfck": "",
-    "canvas": "",
-    "canvas-constructor": "",
-    "child_process": "",
-    "discord.js": "",
-    "jimp": "",
-    "mysql2": "",
-    "opusscript": "",
-    "os": "",
-    "safe-eval": "",
-    "util": ""
+    "brfck": "*",
+    "canvas": "*",
+    "canvas-constructor": "*",
+    "child_process": "*",
+    "discord.js": "*",
+    "jimp": "*",
+    "mysql2": "*",
+    "opusscript": "*",
+    "os": "*",
+    "safe-eval": "*",
+    "util": "*"
   }
 }
