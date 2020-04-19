@@ -5,6 +5,7 @@ console.log('Запуск модуля интервалов...')
 Comp.cmdPH = setInterval(() => Comp.client.stats.cmds.perHour = 0, 3600000)
 
 Comp.devmode?console.log('Random status skipping'):Comp.RS = setInterval(() => {
+Comp.cpuse.usage().then(i => Comp.client.stats.cpu = i)
 Comp.client.stats.users = {users: Comp.client.users.cache.filter(u => !u.bot).size, bots: Comp.client.users.cache.filter(u => u.bot).size}
 let i = 0,
 status = [`ЭВМ ${Comp.beta?'бета':'им. Сталина.'}`, `${Comp.declOfNum(Comp.client.stats.users.users, ['товарищ', 'товарища', 'товарищей'], 1)}`]
@@ -19,6 +20,7 @@ msg.edit(new Comp.Discord.MessageEmbed()
 .setThumbnail(Comp.client.user.avatarURL({format: 'png'}))
 .addField('Пинг', `${Comp.addCommas(Math.round(Comp.client.ws.ping))} мс`, true)
 .addField('ОЗУ', `${(process.memoryUsage().rss / 1024 / 1024 / 1024).toFixed(2)} / ${Math.floor(Comp.os.totalmem() / 1024 / 1024 / 1024)} ГБ`, true)
+.addField('Процессор', Comp.client.stats.cpu.join(' '), true)
 .addField('Команд', 'Всего: ' + Comp.client.commands.length + '\nДоступных всем: ' + Comp.client.commands.filter(c => !c.private && !c.hidden).length + '\nСтраниц в команде помощи: ' + Comp.addCommas(Math.ceil(Comp.client.commands.filter(c => !c.private && !c.hidden).length / 15)), true)
 .addField('Использованных команд', Comp.addCommas(Comp.client.stats.cmds.total), true)
 .addField('Команды за час', Comp.addCommas(Comp.client.stats.cmds.perHour), true)
