@@ -2,8 +2,9 @@ module.exports.run = () => {
 
 console.log('Инициализация переменных...')
 
-//Отсталые, стрелки не саппортит :-1:
+//Расширение дефолтных функций
 Array.prototype.has = function(int) {return int?(this.find(i => i == int)?true:false):this.length > 0}
+Math.avg = arr => {arr = arr.filter(i => parseInt(i)).map(i => parseInt(i)); return arr.reduce((a,b)=>a+b)/arr.length}
 
 Comp.permissions = {
 FLAGS: {
