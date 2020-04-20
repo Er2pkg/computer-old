@@ -8,7 +8,7 @@
   "dependencies": {
     "@megavasiliy007/sdc-api": "github:MegaVasiliy007/sdc-api",
     "brfck": "*",
-    "cpuse": "*",
+    "cpuse": "^1.1.0",
     "canvas": "*",
     "canvas-constructor": "*",
     "child_process": "*",
