@@ -1,8 +1,8 @@
 ﻿module.exports.info = {
 name: 'жс',
 engname: 'eval',
-regex: 'д?жс',
-engregex: 'eval|d?js',
+regex: '/д?жс/',
+engregex: '/eval|d?js/',
 args: '<код>',
 engargs: '<code>',
 desc: 'Эмулирует код',
