@@ -14,7 +14,7 @@ else Comp.SDC.setAutoPost(Comp.client)
 Comp.client.prefixes = Comp.beta?['бета', 'бэта', 'бето', 'бэто', `<@${Comp.client.user.id}>`, 'beta', 'beto', 'b.', 'б.', 'бю']:['товарищ', 'таварищ', 'таварищь', 'товарищь', `<@${Comp.client.user.id}>`, 'comrade', 'comrad', 'c.', 'к.', 'кю']
 Comp.devmode?'':Comp.client.user.setActivity(`${Comp.client.prefixes[0]} помогай | ЭВМ ${Comp.beta?'бета':'им. Сталина.'}`)
 
-Comp.cpuse.usage().then(i =>
+Comp.cpuse.usageAvg().then(i =>
 Comp.client.stats = {cmds: {total: 0, perHour: 0}, users: {users: Comp.client.users.cache.filter(u => !u.bot).size, bots: Comp.client.users.cache.filter(u => u.bot).size}, msgs: 0, cpu: i})
 Comp.client.ignores = []
 Comp.client.commands = []
