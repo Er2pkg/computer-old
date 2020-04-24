@@ -19,7 +19,7 @@ avatar = await Comp.jimp.read(user.avatarURL({format: 'png'})),
 mask = await Comp.jimp.read('./assets/avatarmask.png'),
 bgmask = await Comp.jimp.read('./assets/bgmask.png'),
 bg = await Comp.jimp.read(row.bg),
-bar = await Comp.jimp.read(new Canvas(700, 20).setColor('#' + (row.accent?row.accent:(bg.getPixelColor(96, 100).toString(16).slice(0, -2)))).addRect(0, 0, Math.ceil(row.xp / (Comp.xpFormule(row.lvl) / 100) * 7), 20).toBuffer()),
+bar = await Comp.jimp.read(new Canvas(700, 20).setColor('#' + (row.accent && row.accent!=='null'?row.accent:(bg.getPixelColor(96, 100).toString(16).slice(0, -2)))).addRect(0, 0, Math.ceil(row.xp / (Comp.xpFormule(row.lvl) / 100) * 7), 20).toBuffer()),
 fnt = await Comp.jimp.loadFont('./fonts/uni-sans-heavy-64-white.fnt')
 await avatar.resize(200, 200).mask(mask, 0, 0)
 await bg.resize(934, 282).blur(5).mask(bgmask)
