@@ -38,7 +38,7 @@ let key = Comp.DBid(i, t), val = Comp.DBtables[t]
 i.id = key
 Comp.DB[t].set(key, new Comp.structures[val]('', i))
 })
-Comp.DBB.set(Comp.DBtables[t]+'Manager', new Comp.BaseManager(rows, Comp.DBtables[t])
+Comp.DBB.set(Comp.DBtables[t]+'Manager', new Comp.BaseManager(rows, Comp.DBtables[t]))
 console.log('DB loaded',t)
 }))
 console.log('DB inited')
