@@ -61,13 +61,14 @@ Object.keys(Comp.DBtables).forEach(t =>
 Comp.db.query('SELECT * FROM '+t, (err, rows) => {
 if(err) throw err
 rows.forEach(i => {
-let key = Comp.DBid(i, t)
-let row = Comp.DB[t].get(key)
-let oldDB = Object.values(i), newDB = Object.values(row || []), keys = Object.keys(row || []).filter(k => !k.startsWith('_')), unmatches = []
+let key = Comp.DBid(i, t),
+keyz = (key.split('_')[1]?key.split('_'):[0, key]),
+row = Comp.DB[t].get(key)
+oldDB = Object.values(i), newDB = Object.values(row || []), keys = Object.keys(row || []).filter(k => !['_', 'iid', 'idn'].find(i => k.startsWith(i))), unmatches = []
 if(newDB.length > 0 && keys.length > 0) oldDB.forEach((o, ind) => newDB[ind] !== o?unmatches.push({index: ind, key: keys[ind]}):'')
 if(unmatches) unmatches = unmatches.filter(i => i.key)
-if(newDB.length > 0 && row && row._deleted) {Comp.DB[t].delete(key); Comp.db.query(`DELETE FROM ${t} WHERE id = ${i.id+(i.guild?' AND guild = '+i.guild:'')}`)}
-else if(unmatches.length > 0 && newDB.length > 0 && !row._deleted) Comp.db.query(`UPDATE ${t} SET ${unmatches.map(i => i.key+' = \''+newDB[i.index]+'\'').join(', ')} WHERE id = '${i.id+(i.guild?('\' AND guild = \''+i.guild):'')}'`)
+if(newDB.length > 0 && row && row._deleted) {Comp.DB[t].delete(key); Comp.db.query(`DELETE FROM ${t} WHERE id = ${keyz[1]+(i.guild?' AND guild = '+i.guild:'')}`)}
+else if(unmatches.length > 0 && newDB.length > 0 && !row._deleted) Comp.db.query(`UPDATE ${t} SET ${unmatches.map(i => i.key+' = \''+newDB[i.index]+'\'').join(', ')} WHERE id = '${keyz[1]+(i.guild?('\' AND guild = \''+i.guild):'')}'`)
 else if(newDB.length < 1) Comp.db.query(`INSERT INTO ${t} (${keys.join(', ')}) '${newDB.join('\', \'')}`)
 })}))
 console.log('sync DB completed')
