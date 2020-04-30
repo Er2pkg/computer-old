@@ -61,9 +61,7 @@ Object.keys(Comp.DBtables).forEach(t =>
 Comp.db.query('SELECT * FROM '+t, (err, rows) => {
 if(err) throw err
 rows.forEach(i => {
-let key = i.id?i.id:0
-if(['notes'].includes(t)) key = i.user+'_'+i.id
-if(['mutes'].includes(t)) key = i.guild+'_'+i.id
+let key = Comp.DBid(i, t)
 let row = Comp.DB[t].get(key)
 let oldDB = Object.values(i), newDB = Object.values(row || []), keys = Object.keys(row || []).filter(k => !k.startsWith('_')), unmatches = []
 if(newDB.length > 0 && keys.length > 0) oldDB.forEach((o, ind) => newDB[ind] !== o?unmatches.push({index: ind, key: keys[ind]}):'')
