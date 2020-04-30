@@ -5,6 +5,7 @@ console.log('Запуск модуля интервалов...')
 Comp.cmdPH = setInterval(() => Comp.client.stats.cmds.perHour = 0, 3600000)
 
 Comp.devmode?console.log('Random status skipping'):Comp.RS = setInterval(() => {
+if(!Comp.client.stats) return
 Comp.cpuse.usageAvg().then(i => Comp.client.stats.cpu = i)
 Comp.client.stats.users = {users: Comp.client.users.cache.filter(u => !u.bot).size, bots: Comp.client.users.cache.filter(u => u.bot).size}
 let i = 0,
