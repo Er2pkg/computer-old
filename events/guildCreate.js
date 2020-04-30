@@ -1,7 +1,7 @@
 module.exports.run = guild => {
 if(!guild.roles.find(r => r.name === 'Muted')) guild.createRole({name: 'Muted', permissions: 0})
 const row = Comp.DB.glangs.get(guild.id)
-if(!row) { Comp.DB.glangs.set(guild.id, new Comp.classes.Lang({id: guild.id, lang: 1})
+if(!row) { Comp.DB.glangs.set(guild.id, new Comp.structures.Lang('', {id: guild.id, lang: 1})
 Comp.client.glangs.push({gid: guild.id, lang: 1})
 }
 let channels = guild.channels.filter(c => c.type === 'text' && c.permissionsFor(guild.members.get(Comp.client.user.id)).has('SEND_MESSAGES'))

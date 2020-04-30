@@ -1,5 +1,5 @@
 module.exports = class Pred {
-constructor(obj) {
+constructor(a, obj) {
 this.id = obj.id?obj.id:null
 this.invite = obj.invite || 0
 this.spam = obj.spam || 0

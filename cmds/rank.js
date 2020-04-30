@@ -41,5 +41,5 @@ message.channel.send('Made for ' + Math.ceil((Date.now() - (message.editedTimest
 const row = Comp.DB.xp.get(user.id)
 if(!row) return message.reply(ph[0])
 if(!['prev', 'preview'].includes(message.args[0])) rcard(row)
-else rcard(new Comp.classes.XP({id: user.id, lvl: 12, money: 228, xp: 768}))
+else rcard(new Comp.structures.XP('', {id: user.id, lvl: 12, money: 228, xp: 768}))
 }

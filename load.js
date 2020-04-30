@@ -1,8 +1,8 @@
 class Comp {
 constructor() {
 this.beta = process.env.beta || false
-this.Discord = require("discord.js")
-this.client = new this.Discord.Client({disableEveryone: true})
+this.Discord = require('discord.js')
+this.client = new this.Discord.Client({disableMentions: true})
 this.fs = require('fs')
 this.handlers = []; this.msghandlers = []; this.modules = []
 this.ltypes = ['handlers', 'modules']

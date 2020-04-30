@@ -1,5 +1,5 @@
 module.exports = class Note {
-constructor(obj) {
+constructor(a, obj) {
 this.user = obj.user?obj.user:null
 this.id = obj.id || 1
 this.name = obj.name || ''

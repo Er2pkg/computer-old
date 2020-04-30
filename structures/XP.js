@@ -1,5 +1,5 @@
 module.exports = class XP {
-constructor(obj) {
+constructor(a, obj) {
 this.id = obj.id?obj.id:null
 this.xp = obj.xp || 0
 this.lvl = obj.lvl || 1

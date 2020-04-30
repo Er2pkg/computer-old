@@ -15,7 +15,7 @@ if(!prefix && (!emitted || (emitted && emitted == 0))) {
 if(Comp.unxp.has(message.author.id) || message.channel.id == '693046024146518107') return
 Comp.client.stats.msgs++
 const row = Comp.DB.xp.get(message.author.id)
-if(!row) Comp.DB.xp.set(message.author.id, new Comp.classes.XP({id: message.author.id, xp: message.xp}))
+if(!row) Comp.DB.xp.set(message.author.id, new Comp.structures.XP('', {id: message.author.id, xp: message.xp}))
 else {row.xp = row.xp + message.xp
 if(message.xp <= 0 && row.lvl >= 1) row.xp = row.xp+message.xp
 if(message.xp <= 0 && row.xp + message.xp <= 0 && row.lvl > 1) return row.xp = Comp.xpFormule(row.lvl-1)+message.xp, row.lvl = row.lvl-1
@@ -24,7 +24,7 @@ if (message.lang == 'ru') message.channel.send(new Comp.Discord.MessageEmbed()
 .setTitle("У вас новый уровень!")
 .setColor('00fff0')
 .addField("Уровень", row.lvl + 1)).then(msg => msg.delete({timeout: 5500}))
-else message.channel.send(new Comp.Message.RichEmbed()
+else message.channel.send(new Comp.Discord.MessageEmbed()
 .setTitle("You get a new level!")
 .setColor('00fff0')
 .addField("Level", row.lvl + 1)).then(msg => msg.delete({timeout: 5500}))
