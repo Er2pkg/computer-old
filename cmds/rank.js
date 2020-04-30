@@ -18,8 +18,10 @@ avatar = await Comp.jimp.read(user.avatarURL({format: 'png'})),
 mask = await Comp.jimp.read('./assets/avatarmask.png'),
 bgmask = await Comp.jimp.read('./assets/bgmask.png'),
 bg = await Comp.jimp.read(row.bg),
-bar = await new Comp.jimp(Math.ceil(row.xp / (Comp.xpFormule(row.lvl) / 100) * 7), 20, ('#' + (row.accent && row.accent!=='null'?row.accent:(bg.getPixelColor(96, 100).toString(16).slice(0, -2))))),
+bar = await new Comp.jimp(700, 20, '#00000000'),
+barr = await new Comp.jimp(Math.ceil(row.xp / (Comp.xpFormule(row.lvl) / 100) * 7), 20, ('#' + (row.accent && row.accent!=='null'?row.accent:(bg.getPixelColor(96, 100).toString(16).slice(0, -2))))),
 fnt = await Comp.jimp.loadFont('./fonts/uni-sans-heavy-64-white.fnt')
+await bar.composite(barr, 0, 0)
 await avatar.resize(200, 200).mask(mask, 0, 0)
 await bg.resize(934, 282).blur(5).mask(bgmask)
 await Comp.jimp.read('./assets/xpmask.png').then(async xpmask => await bar.mask(xpmask.resize(700, 20), 0, 0))
@@ -40,5 +42,5 @@ message.channel.send('Made for ' + Math.ceil((Date.now() - (message.editedTimest
 const row = Comp.DB.xp.get(user.id)
 if(!row) return message.reply(ph[0])
 if(!['prev', 'preview'].includes(message.args[0])) rcard(row)
-else rcard(new Comp.structures.XP('', {id: user.id, lvl: 12, money: 228, xp: 768}))
+else rcard(new Comp.structures.get('XP')('', {id: user.id, lvl: 12, money: 228, xp: 768}))
 }
