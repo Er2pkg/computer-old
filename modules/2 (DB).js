@@ -12,7 +12,7 @@ Comp.DBtables = {
 Comp.DB = {}
 Comp.structures = {}
 Object.keys(Comp.DBtables).forEach(i => Comp.DB[i] = new Comp.Discord.Collection())
-Object.values(Comp.DBtables).forEach(i => Comp.structures[i] = require('../classes/'+i))
+Object.values(Comp.DBtables).forEach(i => Comp.structures[i] = require('../structures/'+i))
 Comp.classes = Comp.structures
 
 Object.keys(Comp.DBtables).forEach(t =>
