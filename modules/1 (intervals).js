@@ -51,8 +51,8 @@ if(inmute == 0 && m.roles.cache.has(role.id)) m.roles.remove(role.id).catch(() =
 if(inmute == 1 && !m.roles.cache.has(role.id)) m.roles.add(role.id).catch(() => console.log('fuck')), console.log('add role') 
 })})
 
-Comp.client.users.cache.forEach(u => u.bot?'':Comp.DB.preds.get(u.id)?'':Comp.DB.preds.set(u.id, new Comp.structures.get('Pred')('', {id: u.id})))
-Comp.client.users.cache.forEach(u => u.bot?'':Comp.DB.ignores.get(u.id)?'':Comp.DB.ignores.set(u.id, new Comp.structures.get('Ignore')('', {id: u.id})))
+Comp.client.users.cache.forEach(u => u.bot?'':Comp.DB.preds.get(u.id)?'':Comp.DB.preds.set(u.id, new (Comp.structures.get('Pred'))('', {id: u.id})))
+Comp.client.users.cache.forEach(u => u.bot?'':Comp.DB.ignores.get(u.id)?'':Comp.DB.ignores.set(u.id, new (Comp.structures.get('Ignore'))('', {id: u.id})))
 }, 5000)
 
 Comp.devmode?console.log('DB sync skipping'):Comp.DBs = setInterval(() => {

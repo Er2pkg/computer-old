@@ -29,9 +29,9 @@ if(err) throw err
 rows.forEach(i => {
 let key = Comp.DBid(i, t), val = Comp.DBtables[t]
 i.id = key
-Comp.DB[t].set(key, new Comp.structures.get(val)('', i))
+Comp.DB[t].set(key, new (Comp.structures.get(val))('', i))
 })
-Comp.DBB.set(Comp.DBtables[t]+'Manager', new Comp.managers.get(Comp.DBtables[t])(rows, Comp.DBtables[t]))
+Comp.DBB.set(Comp.DBtables[t]+'Manager', new (Comp.managers.get(Comp.DBtables[t]))(rows, Comp.DBtables[t]))
 console.log('DB loaded',t)
 }))
 console.log('DB inited')

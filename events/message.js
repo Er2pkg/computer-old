@@ -15,7 +15,7 @@ if(!prefix && (!emitted || (emitted && emitted == 0))) {
 if(Comp.unxp.has(message.author.id) || message.channel.id == '693046024146518107') return
 Comp.client.stats.msgs++
 const row = Comp.DB.xp.get(message.author.id)
-if(!row) Comp.DB.xp.set(message.author.id, new Comp.structures.get('XP')('', {id: message.author.id, xp: message.xp}))
+if(!row) Comp.DB.xp.set(message.author.id, new (Comp.structures.get('XP'))('', {id: message.author.id, xp: message.xp}))
 else {row.xp = row.xp + message.xp
 if(message.xp <= 0 && row.lvl >= 1) row.xp = row.xp+message.xp
 if(message.xp <= 0 && row.xp + message.xp <= 0 && row.lvl > 1) return row.xp = Comp.xpFormule(row.lvl-1)+message.xp, row.lvl = row.lvl-1
