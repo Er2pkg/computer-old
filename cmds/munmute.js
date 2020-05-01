@@ -9,8 +9,8 @@ desc: 'Анмут',
 engdesc: 'Unmute',
 private: true,
 }
-module.exports.run = message => {
-const row = Comp.DB.mutes.get(message.guild.id+'_'+message.author.id)
+module.exports.run = async message => {
+const row = await Comp.models.get('Mute').findOne({guild: message.guild.id, id: message.author.id})
 if(!row) return message.reply('-_-')
-else {row._deleted = true; message.reply('ok')}
+else {row.remove(); message.reply('ok')}
 }

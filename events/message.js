@@ -1,7 +1,7 @@
-module.exports.run = (message, emitted) => {
+module.exports.run = async (message, emitted) => {
 if (!message.guild || message.author.bot) return
 
-const tglang = Comp.DB.glangs.get(message.guild.id)
+const tglang = await Comp.models.get('Lang').findOne({id: message.guild.id})
 message.glang = tglang?tglang.lang:1
 message.lang = message.glang==1?'ru':'en'
 message.xp = Comp.random(15, 25)
@@ -14,11 +14,11 @@ const prefix = Comp.client.prefixes.find(p => message.content.toLowerCase().star
 if(!prefix && (!emitted || (emitted && emitted == 0))) {
 if(Comp.unxp.has(message.author.id) || message.channel.id == '693046024146518107') return
 Comp.client.stats.msgs++
-const row = Comp.DB.xp.get(message.author.id)
-if(!row) Comp.DB.xp.set(message.author.id, new (Comp.structures.get('XP'))('', {id: message.author.id, xp: message.xp}))
+const row = await Comp.models.get('XP').findOne({id: message.author.id})
+if(!row) await Comp.models.get('XP').create({id: message.author.id, xp: message.xp})
 else {row.xp = row.xp + message.xp
 if(message.xp <= 0 && row.lvl >= 1) row.xp = row.xp+message.xp
-if(message.xp <= 0 && row.xp + message.xp <= 0 && row.lvl > 1) return row.xp = Comp.xpFormule(row.lvl-1)+message.xp, row.lvl = row.lvl-1
+if(message.xp <= 0 && row.xp + message.xp <= 0 && row.lvl > 1) {row.xp = Comp.xpFormule(row.lvl-1)+message.xp; row.lvl = row.lvl-1; return row.save()}
 if(row.xp + message.xp >= Comp.xpFormule(row.lvl)) {
 if (message.lang == 'ru') message.channel.send(new Comp.Discord.MessageEmbed()
 .setTitle("У вас новый уровень!")
@@ -29,7 +29,9 @@ else message.channel.send(new Comp.Discord.MessageEmbed()
 .setColor('00fff0')
 .addField("Level", row.lvl + 1)).then(msg => msg.delete({timeout: 5500}))
 row.xp = 0, row.lvl = row.lvl + 1
-}}}
+}}
+row.save()
+}
 
 if(!prefix) return
 else message.xp = 0

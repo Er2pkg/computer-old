@@ -39,8 +39,8 @@ await bg
 await message.channel.stopTyping()
 message.channel.send('Made for ' + Math.ceil((Date.now() - (message.editedTimestamp?mesaage.editedTimestamp:message.createdTimestamp)) / 1000) + ' seconds ', {files: [await new Comp.Discord.MessageAttachment(buff, 'rank.png')]})
 })}
-const row = Comp.DB.xp.get(user.id)
+const row = await Comp.models.get('XP').findOne({id: user.id})
 if(!row) return message.reply(ph[0])
 if(!['prev', 'preview'].includes(message.args[0])) rcard(row)
-else rcard(new (Comp.structures.get('XP'))('', {id: user.id, lvl: 12, money: 228, xp: 768}))
+else rcard(new (Comp.schemas.get('XP'))({id: user.id, lvl: 12, money: 228, xp: 768}))
 }
