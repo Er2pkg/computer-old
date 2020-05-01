@@ -67,7 +67,7 @@ row = Comp.DB[t].get(key)
 oldDB = Object.values(i), newDB = Object.values(row || []), keys = Object.keys(row || []).filter(k => !['_', 'iid', 'idn', 'id'].find(i => k.startsWith(i))), unmatches = []
 if(newDB.length > 0 && keys.length > 0) oldDB.forEach((o, ind) => newDB[ind] !== o?unmatches.push({index: ind, key: keys[ind]}):'')
 if(unmatches) unmatches = unmatches.filter(i => i.key)
-console.log(['oldDB:', oldDB, 'newDB:', newDB, 'keys:', keys, 'keyz:', keyz, 'unmatches:', unmatches].join('\n'))
+console.log(['oldDB:', oldDB, 'newDB:', newDB, 'keys:', keys, 'keyz:', keyz, 'unmatches:', unmatches])
 if(newDB.length > 0 && row && row._deleted) {Comp.DB[t].delete(key); Comp.db.query(`DELETE FROM ${t} WHERE id = ${keyz[1]+(i.guild?' AND guild = '+i.guild:'')}`)}
 else if(unmatches.length > 0 && newDB.length > 0 && !row._deleted) Comp.db.query(`UPDATE ${t} SET ${unmatches.map(i => i.key+' = \''+newDB[i.index]+'\'').join(', ')} WHERE id = '${keyz[1]+(i.guild?('\' AND guild = \''+i.guild):'')}'`)
 else if(newDB.length < 1) Comp.db.query(`INSERT INTO ${t} (${keys.join(', ')}) '${newDB.join('\', \'')}`)
