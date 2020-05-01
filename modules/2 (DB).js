@@ -11,6 +11,7 @@ return key
 //Comp.DB = new Collection()
 Comp.models = new Collection()
 Comp.schemas = require('../schemas/list')(Comp.db)
+console.log(Comp.schemas)
 Comp.schemas.keyArray().forEach(i => {
 Comp.models.set(i, Comp.db.model(i, Comp.schemas.get(i)))
 
