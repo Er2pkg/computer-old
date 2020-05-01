@@ -61,11 +61,14 @@ Object.keys(Comp.DBtables).forEach(t =>
 Comp.db.query('SELECT * FROM '+t, (err, rows) => {
 if(err) throw err
 rows.forEach(i => {
+let newDB = row
+for(let o=0;o<newDB.length;o++) if(['_', 'iid', 'idn', 'id'].find(i => (Object.keys(newDB)[o]).startsWith(i)))) newDB.splice(o, 1)
+newDB = Object.values(newDB)
 let key = Comp.DBid(i, t),
 type,
 keyz = (key.split('_')[1]?key.split('_'):[0, key]),
 row = Comp.DB[t].get(key)
-oldDB = Object.values(i), newDB = Object.values(row.filter(k => !['_', 'iid', 'idn', 'id'].find(i => k.startsWith(i))) || []), keys = Object.keys(row || []).filter(k => !['_', 'iid', 'idn', 'id'].find(i => k.startsWith(i))), unmatches = []
+oldDB = Object.values(i), keys = Object.keys(row || []).filter(k => !['_', 'iid', 'idn', 'id'].find(i => k.startsWith(i))), unmatches = []
 if(newDB.length > 0 && keys.length > 0) oldDB.forEach((o, ind) => newDB[ind] !== o?unmatches.push({index: ind, key: keys[ind]}):'')
 if(unmatches) unmatches = unmatches.filter(i => i.key)
 if(newDB.length > 0 && row && row._deleted) type = 'delete'
