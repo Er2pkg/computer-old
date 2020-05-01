@@ -65,7 +65,7 @@ let key = Comp.DBid(i, t),
 type,
 keyz = (key.split('_')[1]?key.split('_'):[0, key]),
 row = Comp.DB[t].get(key)
-oldDB = Object.values(i), newDB = Object.values(row || []), keys = Object.keys(row || []).filter(k => !['_', 'iid', 'idn', 'id'].find(i => k.startsWith(i))), unmatches = []
+oldDB = Object.values(i), newDB = Object.values(row.filter(k => !['_', 'iid', 'idn', 'id'].find(i => k.startsWith(i))) || []), keys = Object.keys(row || []).filter(k => !['_', 'iid', 'idn', 'id'].find(i => k.startsWith(i))), unmatches = []
 if(newDB.length > 0 && keys.length > 0) oldDB.forEach((o, ind) => newDB[ind] !== o?unmatches.push({index: ind, key: keys[ind]}):'')
 if(unmatches) unmatches = unmatches.filter(i => i.key)
 if(newDB.length > 0 && row && row._deleted) type = 'delete'
