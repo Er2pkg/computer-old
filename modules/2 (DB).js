@@ -15,6 +15,8 @@ Comp.schemas.keyArray().forEach(i => {
 Comp.models.set(i, Comp.db.model(i, Comp.schemas.get(i)))
 
 console.log('DB loaded',t)
+console.log(Comp.models)
+console.log(Comp.schemas)
 })
 console.log('DB inited')
 }
