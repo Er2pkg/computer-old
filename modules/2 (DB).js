@@ -20,8 +20,7 @@ Comp.DBtables.forEach(i => {
 Comp.schemas.set(i, new (require('../schemas/'+i))(Comp.db))
 Comp.models.set(i, Comp.db.model(i, Comp.schemas.get(i)))
 
-console.log('DB loaded',t)
+console.log('DB loaded',i)
 })
-console.log(Comp.schemas)
 console.log('DB inited')
 }

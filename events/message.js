@@ -14,8 +14,8 @@ const prefix = Comp.client.prefixes.find(p => message.content.toLowerCase().star
 if(!prefix && (!emitted || (emitted && emitted == 0))) {
 if(Comp.unxp.has(message.author.id) || message.channel.id == '693046024146518107') return
 Comp.client.stats.msgs++
-const row = await Comp.models.get('XP').findOne({id: message.author.id})
-if(!row) await Comp.models.get('XP').create({id: message.author.id, xp: message.xp})
+let row = await Comp.models.get('XP').findOne({id: message.author.id})
+if(!row) row = new (Comp.models.get('XP'))({id: message.author.id, xp: message.xp})
 else {row.xp = row.xp + message.xp
 if(message.xp <= 0 && row.lvl >= 1) row.xp = row.xp+message.xp
 if(message.xp <= 0 && row.xp + message.xp <= 0 && row.lvl > 1) {row.xp = Comp.xpFormule(row.lvl-1)+message.xp; row.lvl = row.lvl-1; return row.save()}
@@ -74,7 +74,10 @@ if(!lag.match(/ru(s)?(sian)?|ру(с)?(ский)?|en(g)?(lish)?|ан(г)?(лий
 else {
 if(lag.match(/ru(s)?(sian)?|ру(с)?(ский)?/)) lag = 1
 else lag = 2
-Comp.DB.glangs.get(message.guild.id).lang = lag
+let row = await Comp.models.get('Lang').findOne({id: message.guild.id})
+if(!row) row = new (Comp.models.get('Lang'))({id: message.guild.id, lang: lag})
+else row.lang = lag
+row.save()
 if(lag == 1) message.reply('установлен :flag_ru: язык')
 else message.reply('language will updated to :flag_us:')
 }}
