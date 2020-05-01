@@ -8,7 +8,7 @@ engargs: '<id> <time (in ms)> [reason]',
 private: true,
 }
 
-module.exports.run = message => {
+module.exports.run = async message => {
 const row = await Comp.models.get('Mute').findOne({guild: message.guild.id, id: message.author.id})
 if(!row) {await Comp.models.get('Mute').create({guild: message.guild.id, id: message.author.id, inmute: 1, reason: (message.args.slice(2).join(' ') || 'no reason'), mute_time: Date.now(), unmute_time: (Date.now()+parseInt(message.args[1])) })
 message.channel.send(['ok',
