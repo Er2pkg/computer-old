@@ -1,5 +1,4 @@
 module.exports.run = message => {
-if(!message || !message.content) return
 let msg = message.content.split(' '), arr = [], mtchs = 0
 if((!msg[1] || (msg[1] && Comp.client.commands.find(c => msg[1].match(new RegExp(c.regex?c.regex:c.engregex))))) && Comp.client.prefixes.find(p => p == msg[0].toLowerCase())) return
 msg.forEach((i, index) => arr.push({index: index, match: i.match(/(т[оа]в[оа]рь?)([А-Яа-яЁёA-Za-z]{1,})/i)}))

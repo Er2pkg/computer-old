@@ -8,9 +8,9 @@ message.lang = message.glang==1?'ru':'en'
 message.xp = Comp.random(15, 25)
 message.prefix = Comp.client.prefixes.find(p => message.content.toLowerCase().startsWith(p))
 
-const moduls = Comp.modules.filter(i => !i.disabled && gld.modules.find(x => x.toString().startsWith(i.name)))
+const moduls = Comp.modules.filter(i => !i.disabled && gld.modules.find(x => i.name.startsWith(x.toString())))
 
-if(moduls.length > 0)
+if(moduls.array().length > 0)
 moduls.forEach(h => h.run(message, message.glang, emitted))
 
 if(!message.prefix && (!emitted || (emitted && emitted == 0))) {
