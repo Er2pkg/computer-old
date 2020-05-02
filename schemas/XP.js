@@ -1,6 +1,5 @@
-module.exports = class XP {
-constructor(db) {
-this.schema = new db.Schema({
+module.exports = db =>
+new db.Schema({
 id: String,
 xp: {type: Number, default: 0},
 lvl: {type: Number, min: 1, default: 1},
@@ -8,5 +7,3 @@ bg: {type: String, default: 'https://cdn.mee6.xyz/plugins/levels/cards/backgroun
 money: {type: Number, default: 0},
 accent: {type: String, default: 'null'},
 })
-return this.schema
-}}

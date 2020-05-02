@@ -3,8 +3,10 @@ module.exports.run = () => {
 console.log('Инициализация переменных...')
 
 //Расширение дефолтных функций
-Array.prototype.has = function(int) {return int?(this.find(i => i == int)?true:false):this.length > 0}
+Array.prototype.has = function(int) {return int===null?this.length>0:(this.find(i => i == int)?true:false)}
 Math.avg = arr => {arr = arr.filter(i => parseInt(i)).map(i => parseInt(i)); return arr.reduce((a,b)=>a+b)/arr.length}
+Comp.space = (i, len = 3, ind = '+', j = ' ') => {if(i.length>=len)return i;else{i=i.split('');ind=='+'?i.shift(j):i.unshift(j); return Comp.space(i.join(''),len,ind,j)}}
+String.prototype.space = function(len,ind,j){return Comp.space(this,len,ind,j)}
 
 Comp.brfck = require('brfck')
 Comp.cpuse = require('cpuse')
@@ -16,12 +18,19 @@ Comp.locales = require('../locales.json')
 Comp.warnedFlood = new Set()
 Comp.unxp = new Set()
 
+Comp.DBtables = [
+'AFK', 'Ignore', 'Guild',
+'Mute', 'Note', 'Pred',
+'XP',
+]
+
+Comp.Collection = Comp.Discord.Collection
+
 Comp.client.login(process.env.ClientToken).then(() => delete process.env.ClientToken).catch(() => console.log('CLIENT AUTH FAILED'))
 
-Comp.owners = {
-'stalin': '544031928358273045',
-'lenin': '441954631539490857',
-}
+Comp.owners = new Comp.Collection()
+Comp.owners.set('stalin', '544031928358273045')
+Comp.owners.set('lenin', '441954631539490857')
 
 Comp.pS = (c, page, onOne, j) => c.slice(((page - 1) * onOne), (onOne) + ((page - 1) * onOne)).join(j?j:'\n')
 Comp.xpFormule = lvl => (5 * (lvl ^ 2) + 50 * lvl + 100)

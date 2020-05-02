@@ -42,5 +42,5 @@ message.channel.send('Made for ' + Math.ceil((Date.now() - (message.editedTimest
 const row = await Comp.models.get('XP').findOne({id: user.id})
 if(!row) return message.reply(ph[0])
 if(!['prev', 'preview'].includes(message.args[0])) rcard(row)
-else rcard(new (Comp.schemas.get('XP'))({id: user.id, lvl: 12, money: 228, xp: 768}))
+else rcard(new (Comp.models.get('XP'))({id: user.id, lvl: 12, money: 228, xp: 768}))
 }

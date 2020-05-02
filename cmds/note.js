@@ -1,4 +1,10 @@
-const methods = ['лист', 'list', 'добавить', 'add', 'просмотр', 'show', 'просмотреть', 'удалить', 'remove', 'delete', 'изменить', 'edit'], noteHelp = {
+const methods = [
+'лист', 'list', 
+'добавить', 'add', 
+'просмотр', 'show', 'просмотреть', 
+'удалить', 'remove', 'delete', 
+'изменить', 'edit',
+], noteHelp = {
 ru: `заметка(и) лист - лист ваших заметок.
 заметка добавить <текст> - добавить заметку.
 заметка просмотр(еть) <номер заметки> - просмотреть заметку полностью.
@@ -18,26 +24,24 @@ engdesc: 'Notes...',
 regex: '/[щз][ао]мь?[еэ]тк[аи]/',
 engregex: '/nou?[td]e?s?/',
 }
-module.exports.run = (message, ph) => {
-const rows = Comp.DB.notes.filter(i => i.guild == i.user == message.author.id)
-const row = rows[0]
-if(!row) {Comp.DB.mutes.set(message.guild.id+'_'+message.author.id, new Comp.classes.Mute({guild: message.guild.id, id: message.author.id, inmute: 1, reason: (message.args.slice(2).join(' ') || 'no reason'), mute_time: Date.now(), unmute_time: (Date.now()+parseInt(message.args[1])) }))
+module.exports.run = async (message, ph) => {
+const rows = await Comp.models.get('Note').find({user: message.author.id})
 
 let find
 message.channel.startTyping()
-if(!message.args[0] || (message.args[0] && (['помощь', 'помогай', 'помоги', 'help'].includes(message.args[0].toLowerCase()) || !methods.includes(message.args[0].toLowerCase())))) {message.channel.stopTyping(); return message.channel.send(noteHelp[message.lang]);}
+if(!message.args[0] || (message.args[0] && !methods.includes(message.args[0].toLowerCase()))) {message.channel.stopTyping(); return message.channel.send(noteHelp[message.lang]);}
 switch(message.args[0].toLowerCase()) {
 case methods[0]:
 case methods[1]:
 message.channel.stopTyping()
-if(!row) return message.reply(ph[0])
+if(rows.length < 1) return message.reply(ph[0])
 else message.reply('\n'+rows.map(i => `${i.id} (${i.name}...)`).join('\n'))
 break
 case methods[2]:
 case methods[3]:
 message.channel.stopTyping()
 if(!message.args[1]) return message.reply(ph[1])
-let add = ad => {Comp.con.query(`INSERT INTO notes (user, id, name, text) VALUES ('${message.author.id}', ${ad}, '${message.args.slice(1).join(' ').replace(/\'/g, '\\\'').slice(0,10)}', '${message.args.slice(1).join(' ').replace(/\'/g, '\\\'')}')`)}
+let add = async ad => await Comp.models.get('Note').create({id: ad, user: message.author.id, name: message.args[1].slice(0, 10), text: message.args.slice(1).join(' ')})
 if(rows.length < 1) {add(1); message.channel.send(ph[3]+'1')}
 else {add(rows.length+1); message.channel.send(ph[3]+(rows.length+1))}
 break
@@ -60,10 +64,12 @@ if(!['all', 'все'].includes(message.args[1].toLowerCase()) && isNaN(parseInt(
 find = rows.find(i => i.id == parseInt(message.args[1]))
 if(!find && ['all', 'все'].includes(message.args[1].toLowerCase())) find = 'all'
 if(!find) return message.reply(ph[5])
+if(find == 'all') rows.remove()
 else {
-Comp.con.query(`DELETE FROM notes WHERE user='${message.author.id}' ${find!=='all'?'AND id='+find.id:''}`)
-if(find !== 'all') rows.filter(row => row.id > find.id).forEach(row => Comp.con.query(`UPDATE notes SET id=${row.id-1} WHERE USER='${message.author.id}'`))
-message.channel.send(find=='all'?ph[7]:ph[8]+find.id)}
+find.remove()
+rows.filter(row => row.id > find.id).forEach(row => {row.id--; row.save()})
+}
+message.channel.send(find=='all'?ph[7]:ph[8]+find.id)
 break
 case methods[10]:
 case methods[11]:
@@ -73,7 +79,10 @@ if(isNaN(parseInt(message.args[1]))) return message.reply(ph[4])
 find = rows.find(i => i.id == parseInt(message.args[1]))
 if(!find) return message.reply(ph[5])
 if(!message.args[2]) return message.reply(ph[9])
-Comp.con.query(`UPDATE notes SET name='${message.args.slice(2).join(' ').replace(/\'/g, '\\\'').slice(0,10)}', text='${message.args.slice(2).join(' ').replace(/\'/g, '\\\'')}' WHERE user='${message.author.id}' AND id=${find.id}`)
+find
+.name = message.args[2].slice(0, 10)
+.text = message.args.slice(1).join(' ')
+.save()
 message.channel.send(ph[10]+find.id+ph[11])
 break
 }}

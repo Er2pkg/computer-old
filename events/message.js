@@ -1,42 +1,37 @@
 module.exports.run = async (message, emitted) => {
 if (!message.guild || message.author.bot) return
 
-const tglang = await Comp.models.get('Lang').findOne({id: message.guild.id})
-message.glang = tglang?tglang.lang:1
+let gld = await Comp.models.get('Guild').findOne({id: message.guild.id})
+if(!gld) {gld = new (Comp.models.get('Guild'))({id: message.guild.id, lang: 1}); gld.save()}
+message.glang = gld.lang
 message.lang = message.glang==1?'ru':'en'
 message.xp = Comp.random(15, 25)
+message.prefix = Comp.client.prefixes.find(p => message.content.toLowerCase().startsWith(p))
 
-if(Comp.msghandlers.length > 0)
-Comp.msghandlers.forEach(h => h.run(message, message.glang))
+const moduls = Comp.modules.filter(i => !i.disabled && gld.modules.find(x => x.toString().startsWith(i.name)))
 
-const prefix = Comp.client.prefixes.find(p => message.content.toLowerCase().startsWith(p))
+if(moduls.length > 0)
+moduls.forEach(h => h.run(message, message.glang, emitted))
 
-if(!prefix && (!emitted || (emitted && emitted == 0))) {
+if(!message.prefix && (!emitted || (emitted && emitted == 0))) {
 if(Comp.unxp.has(message.author.id) || message.channel.id == '693046024146518107') return
 Comp.client.stats.msgs++
 let row = await Comp.models.get('XP').findOne({id: message.author.id})
 if(!row) row = new (Comp.models.get('XP'))({id: message.author.id, xp: message.xp})
-else {row.xp = row.xp + message.xp
+else {
+row.xp = row.xp + message.xp
 if(message.xp <= 0 && row.lvl >= 1) row.xp = row.xp+message.xp
 if(message.xp <= 0 && row.xp + message.xp <= 0 && row.lvl > 1) {row.xp = Comp.xpFormule(row.lvl-1)+message.xp; row.lvl = row.lvl-1; return row.save()}
-if(row.xp + message.xp >= Comp.xpFormule(row.lvl)) {
-if (message.lang == 'ru') message.channel.send(new Comp.Discord.MessageEmbed()
-.setTitle("У вас новый уровень!")
-.setColor('00fff0')
-.addField("Уровень", row.lvl + 1)).then(msg => msg.delete({timeout: 5500}))
-else message.channel.send(new Comp.Discord.MessageEmbed()
-.setTitle("You get a new level!")
-.setColor('00fff0')
-.addField("Level", row.lvl + 1)).then(msg => msg.delete({timeout: 5500}))
+if(row.xp + message.xp >= Comp.xpFormule(row.lvl))
 row.xp = 0, row.lvl = row.lvl + 1
-}}
+}
 row.save()
 }
 
-if(!prefix) return
+if(!message.prefix) return
 else message.xp = 0
 
-message.args = message.content.slice(prefix.length).trim().split(/ +/g)
+message.args = message.content.slice(message.prefix.length).trim().split(/ +/g)
 message.flags = message.args.filter(i => i.match(/--(\w{1,})/gi)).map(i => i.slice(2))
 message.devMode = message.flags.has('dev')
 message.command = message.args.shift().toLowerCase()
@@ -49,8 +44,8 @@ else return message.reply('I\'m there. '+(Comp.client.ignores.includes(message.a
 const cmd = [Comp.client.commands.find(c => message.command.match(new RegExp(c.regex))), Comp.client.commands.find(c => message.command.match(new RegExp(c.engregex?c.engregex:c.regex)))]
 if(Comp.client.ignores.includes(message.author.id) && (cmd[0].name && cmd[0].name!=='verify')) return message.react('⛔')
 if(cmd[0] || cmd[1]) Comp.client.stats.cmds.total++, Comp.client.stats.cmds.perHour++
-if (message.glang == 1 && cmd[0] && (!cmd[0].private || message.author.id === Comp.owners.stalin) && cmd[0].run) cmd[0].uses+=1, cmd[0].run(message)
-if (message.glang == 2 && cmd[1] && (!cmd[1].private || message.author.id === Comp.owners.stalin) && cmd[1].run) cmd[1].uses+=1, cmd[1].run(message)
+if (message.glang == 1 && cmd[0] && (!cmd[0].private || Comp.owners.find(i => i == message.author.id)) && cmd[0].run) cmd[0].uses+=1, cmd[0].run(message)
+if (message.glang == 2 && cmd[1] && (!cmd[1].private || Comp.owners.find(i => i == message.author.id)) && cmd[1].run) cmd[1].uses+=1, cmd[1].run(message)
 
 if(message.command.match(/(п[оа]м[оа]г[аи]й?)|помощь?/)) {
 if(message.glang !== 1) return message.reply('this command allow only on :flag_ru: language, but for this guild will setting up an :flag_us: language.')
@@ -74,9 +69,8 @@ if(!lag.match(/ru(s)?(sian)?|ру(с)?(ский)?|en(g)?(lish)?|ан(г)?(лий
 else {
 if(lag.match(/ru(s)?(sian)?|ру(с)?(ский)?/)) lag = 1
 else lag = 2
-let row = await Comp.models.get('Lang').findOne({id: message.guild.id})
-if(!row) row = new (Comp.models.get('Lang'))({id: message.guild.id, lang: lag})
-else row.lang = lag
+if(!gld) gld = new (Comp.models.get('Guild'))({id: message.guild.id, lang: lag})
+else gld.lang = lag
 row.save()
 if(lag == 1) message.reply('установлен :flag_ru: язык')
 else message.reply('language will updated to :flag_us:')

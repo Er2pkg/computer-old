@@ -40,8 +40,9 @@ msg.edit(new Comp.Discord.MessageEmbed()
 Comp.devmode?console.log('DB interval skipping'):Comp.intDB = setInterval(async () => {
 const rows = await Comp.models.get('Mute').find({})
 rows.forEach(row => {
-let role = Comp.client.guilds.get(row.guild).roles.cache.find(r => r.name.toLowerCase().match(/(mut[ei]?)[dt]?|замучен{1,}ые/) && r.editable)
-if(!role) return
+let role = Comp.client.guilds.cache.get(row.guild).roles.cache.find(r => r.name.toLowerCase().match(/(mut[ei]?)[dt]?|замучен{1,}ые/) && r.editable),
+m = Comp.client.guilds.cache.get(row.guild).members.cache.get(row.id)
+if(!(role && m)) return
 let inmute = (row && row.inmute?row.inmute:0)
 if(inmute == 1 && row && row.unmute_time && row.unmute_time <= Date.now()) inmute = 0, row.remove(), console.log('unmute')
 else if(inmute == 0 && row && row.unmute_time && row.unmute_time > Date.now()) inmute = 1, row.inmute=1, row.reason=(row.reason?row.reason+'\nauto fix':'auto fix'), row.mute_time=Date.now(), console.log('mute')
