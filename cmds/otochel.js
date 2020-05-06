@@ -1,12 +1,13 @@
 module.exports.info = {
 name: 'отошёл',
 engname: 'afk',
-regex: '/[оа]т[оа]ш[ёео]л/',
-engregex: '/af([ei])?ka?/',
+regex: '[оа]т[оа]ш[ёео]л',
+engregex: 'af([ei])?ka?',
 args: '[причина]',
 engargs: '[reason]',
 desc: 'Скажет, что ты отошёл',
-engdesc: 'Will say you left to AFK',
+engdesc: 'Will say what you left to AFK',
+examples: ["'поесть'"],
 }
 module.exports.run = async (message, ph) => {
 const row = await Comp.models.get('AFK').findOne({id: message.author.id})

@@ -21,8 +21,8 @@ name: 'заметка',
 engname: 'note',
 desc: 'Заметки...',
 engdesc: 'Notes...',
-regex: '/[щз][ао]мь?[еэ]тк[аи]/',
-engregex: '/nou?[td]e?s?/',
+regex: '[щз][ао]мь?[еэ]тк[аи]',
+engregex: 'nou?[td]e?s?',
 }
 module.exports.run = async (message, ph) => {
 const rows = await Comp.models.get('Note').find({user: message.author.id})
@@ -64,7 +64,7 @@ if(!['all', 'все'].includes(message.args[1].toLowerCase()) && isNaN(parseInt(
 find = rows.find(i => i.id == parseInt(message.args[1]))
 if(!find && ['all', 'все'].includes(message.args[1].toLowerCase())) find = 'all'
 if(!find) return message.reply(ph[5])
-if(find == 'all') rows.remove()
+if(find == 'all') rows.forEach(r => r.remove())
 else {
 find.remove()
 rows.filter(row => row.id > find.id).forEach(row => {row.id--; row.save()})
@@ -79,10 +79,9 @@ if(isNaN(parseInt(message.args[1]))) return message.reply(ph[4])
 find = rows.find(i => i.id == parseInt(message.args[1]))
 if(!find) return message.reply(ph[5])
 if(!message.args[2]) return message.reply(ph[9])
-find
-.name = message.args[2].slice(0, 10)
-.text = message.args.slice(1).join(' ')
-.save()
+find.name = message.args[2].slice(0, 10)
+find.text = message.args.slice(2).join(' ')
+find.save()
 message.channel.send(ph[10]+find.id+ph[11])
 break
 }}

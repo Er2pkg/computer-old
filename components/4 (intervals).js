@@ -1,10 +1,9 @@
 module.exports.run = () => {
-
-console.log('Запуск модуля интервалов...')
+Comp.log('intervals', 'Interval module initialization...')
 
 Comp.cmdPH = setInterval(() => Comp.client.stats.cmds.perHour = 0, 3600000)
 
-Comp.devmode?console.log('Random status skipping'):Comp.RS = setInterval(() => {
+Comp.RS = setInterval(() => {
 if(!Comp.client.stats) return
 Comp.cpuse.usageAvg().then(i => Comp.client.stats.cpu = i)
 Comp.client.stats.users = {users: Comp.client.users.cache.filter(u => !u.bot).size, bots: Comp.client.users.cache.filter(u => u.bot).size}
@@ -14,15 +13,15 @@ if(Comp.client.user.presence.activities[0].name.includes(`${Comp.client.prefixes
 Comp.client.user.setActivity(`${Comp.client.prefixes[0]} помогай | ` + status[i], {type: 'PLAYING'})
 }, 5000)
 
-Comp.devmode?console.log('Auto status skipping'):Comp.cStat = setInterval(() =>
+Comp.cStat = setInterval(() =>
 Comp.client.channels.cache.get('695980819650576384').messages.fetch(Comp.beta?'698508253205889144':'695981096202010654').then(msg => 
-msg.edit(new Comp.Discord.MessageEmbed()
+msg.edit(new Comp.Embed()
 .setTitle(`${Comp.beta?'[BETA] ':''}Бот ${Comp.client.user.username}`)
 .setThumbnail(Comp.client.user.avatarURL({format: 'png'}))
 .addField('Пинг', `${Comp.addCommas(Math.round(Comp.client.ws.ping))} мс`, true)
 .addField('ОЗУ', `${(process.memoryUsage().rss / 1024 / 1024 / 1024).toFixed(2)} / ${Math.floor(Comp.os.totalmem() / 1024 / 1024 / 1024)} ГБ`, true)
 .addField('Процессор', Comp.client.stats.cpu, true)
-.addField('Команд', 'Всего: ' + Comp.client.commands.length + '\nДоступных всем: ' + Comp.client.commands.filter(c => !c.private && !c.hidden).length + '\nСтраниц в команде помощи: ' + Comp.addCommas(Math.ceil(Comp.client.commands.filter(c => !c.private && !c.hidden).length / 15)), true)
+.addField('Команд', 'Всего: ' + Comp.client.commands.cache.size + '\nВидны и нет ограничения прав: ' + Comp.client.commands.cache.filter(c => !c.info.private && !c.info.hidden).size + '\nСтраниц в команде помощи: ' + Comp.addCommas(Math.ceil(Comp.client.commands.cache.filter(c => !c.info.hidden).size / 15)), true)
 .addField('Использованных команд', Comp.addCommas(Comp.client.stats.cmds.total), true)
 .addField('Команды за час', Comp.addCommas(Comp.client.stats.cmds.perHour), true)
 .addField('Сообщений', Comp.addCommas(Comp.client.stats.msgs), true)
@@ -35,9 +34,9 @@ msg.edit(new Comp.Discord.MessageEmbed()
 .addField('Включен',Comp.client.readyAt.toLocaleString('ru-RU', {timeZone: 'Europe/Moscow', hour12: false}) + ' MSK', true)
 .addField('Московское время', new Date(Date.now()).toLocaleString('ru-RU', {timeZone: 'Europe/Moscow', hour12: false}).slice(0, -3), true)
 //.addField(`Последний коммит`, '...', true)
-.setColor('00fff0'))), 15000)
+.setColor(Comp.beta?'BLURPLE':'00fff0'))), 15000)
 
-Comp.devmode?console.log('DB interval skipping'):Comp.intDB = setInterval(async () => {
+Comp.intDB = setInterval(async () => {
 const rows = await Comp.models.get('Mute').find({})
 rows.forEach(row => {
 let role = Comp.client.guilds.cache.get(row.guild).roles.cache.find(r => r.name.toLowerCase().match(/(mut[ei]?)[dt]?|замучен{1,}ые/) && r.editable),
@@ -52,5 +51,5 @@ if(inmute == 1 && !m.roles.cache.has(role.id)) m.roles.add(role.id).catch(() => 
 })
 }, 5000)
 
-console.log('Модуль интервалов запущен')
+Comp.log('intervals', 'Interval module was initialized')
 }

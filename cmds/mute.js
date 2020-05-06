@@ -1,11 +1,14 @@
 module.exports.info = {
 name: 'мут',
 engname: 'mute',
-regex: '/му{1,}[тд]/',
-engregex: '/m[uo]{1,}[td]/',
-args: '<id> <time (in ms)> [reason]',
+regex: 'му{1,}[тд]',
+engregex: 'm[uo]{1,}[td]',
+args: '<айди> <время (в мс)> [причина]',
 engargs: '<id> <time (in ms)> [reason]',
+desc: 'Мут',
+engdesc: 'Mute',
 private: true,
+examples: ["Comp.client.users.cache.random().id+' '+Comp.random(10000, 360000)", "Comp.client.users.cache.random().id+' '+Comp.random(10000, 360000)+' spam'"]
 }
 
 module.exports.run = async message => {

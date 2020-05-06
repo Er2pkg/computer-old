@@ -1,8 +1,8 @@
 ﻿module.exports.info = {
 name: 'запрос',
 engname: 'query',
-regex: '/з[ао]про[сз]/',
-engregex: '/[qk]y?uer{1,}[yi]/',
+regex: 'з[ао]про[сз]',
+engregex: '[qk]y?uer{1,}[yi]',
 private: true,
 hidden: true,
 }

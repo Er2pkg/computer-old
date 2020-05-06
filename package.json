@@ -6,13 +6,15 @@
   "author": "Stalin",
   "license": "ISC",
   "dependencies": {
+    "@discordjs/opus": "^0.3.2",
     "@megavasiliy007/sdc-api": "github:MegaVasiliy007/sdc-api",
     "brfck": "^1.5.0",
     "cpuse": "^1.1.1",
+    "discord-pagination": "^1.2.1",
     "discord.js": "^12.2.0",
-    "jimp": "^0.10.2",
-    "mongoose": "^5.9.11",
-    "opusscript": "^0.0.7",
+    "jimp": "^0.10.3",
+    "mongoose": "^5.9.12",
+    "rgbcolor": "^1.0.1",
     "safe-eval": "^0.4.1"
   }
 }
