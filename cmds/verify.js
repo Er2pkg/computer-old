@@ -6,13 +6,13 @@ desc: 'Верифицирует пользователя',
 engdesc: 'Verifing a user',
 }
 module.exports.run = (message, ph) => {
+if(!message.author.bot && (['verify', 'verification', 'верифи', 'верификация'].includes(message.channel.name) || [/*some ids*/'561921259429167117'].includes(message.channel.id))){
 message.channel.startTyping()
-message.delete({timeout: 1500})
 let i = 0, captcha = Math.random().toString(36).substr(2, 6), user = message.member,
 authorized = message.guild.roles.cache.find(r => r.name.toLowerCase().match(new RegExp(/auth(orized)?|member|мембер|участник|человек|граждан(е|ин)/)))
 if(!authorized) {message.channel.stopTyping(); return message.reply(ph[0])}
 else authorized = authorized.id
-if(!message.author.bot && (['verify', 'verification', 'верифи', 'верификация'].includes(message.channel.name) || [/*some ids*/'561921259429167117'].includes(message.channel.id))){
+message.delete({timeout: 1500})
 Comp.jimp.read("https://santehlux.by/upload/iblock/1a3/white_textile.jpg").then(bg => {
 Comp.jimp.loadFont(Comp.jimp.FONT_SANS_32_BLACK).then(fnt => {
 bg
