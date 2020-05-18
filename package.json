@@ -6,7 +6,6 @@
   "author": "Stalin",
   "license": "ISC",
   "dependencies": {
-    "@discordjs/opus": "^0.3.2",
     "@megavasiliy007/sdc-api": "github:MegaVasiliy007/sdc-api",
     "brfck": "^1.5.0",
     "cpuse": "^1.1.1",

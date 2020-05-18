@@ -30,7 +30,7 @@ Comp.cd = new Comp.Collection()
 Comp.DBtables = [
 'AFK', 'Guild', 'Ignore',
 'Locale', 'Mute', 'Note',
-'Pred', 'XP',
+'Pred', 'XP', 'User',
 ]
 
 Comp.client.login(process.env.ClientToken).then(() => delete process.env.ClientToken).catch(() => console.log('CLIENT AUTH FAILED'))
