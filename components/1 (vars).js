@@ -63,5 +63,37 @@ c?embed.addField(l[4],c):''
 return embed
 }
 
+//SAFE EVAL
+
+const vm = require('vm')
+
+Comp.safeEval = function (code, context, opts) {
+  let sandbox = {},
+  resultKey = 'SAFE_EVAL_' + Math.floor(Math.random() * 1000000)
+  sandbox[resultKey] = {}
+  let clearContext = `
+    (function() {
+      Function = undefined;
+      const keys = Object.getOwnPropertyNames(this).concat(['constructor']);
+      keys.forEach((key) => {
+        const item = this[key];
+        if (!item || typeof item.constructor !== 'function') return;
+        this[key].constructor = undefined;
+      });
+    })();
+  `
+  code = clearContext + resultKey + '=' + code
+  if (context) {
+    Object.keys(context).forEach(function (key) {
+      if (context[key] === Function) return
+      sandbox[key] = context[key]
+    })
+  }
+  vm.runInNewContext(code, sandbox, opts)
+  return sandbox[resultKey]
+}
+
+/// SAFE EVAL
+
 Comp.log('vars', 'Vars were initialized')
 }
