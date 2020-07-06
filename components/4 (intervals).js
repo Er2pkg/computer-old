@@ -36,6 +36,7 @@ msg.edit(new Comp.Embed()
 //.addField(`Последний коммит`, '...', true)
 .setColor(Comp.beta?'BLURPLE':'00fff0'))), 15000)
 
+/*
 Comp.intDB = setInterval(async () => {
 const rows = await Comp.models.get('Mute').find({})
 rows.forEach(row => {
@@ -50,6 +51,7 @@ if(inmute == 0 && m.roles.cache.has(role.id)) m.roles.remove(role.id).catch(() =
 if(inmute == 1 && !m.roles.cache.has(role.id)) m.roles.add(role.id).catch(() => console.log('fuck')), console.log('add role') 
 })
 }, 5000)
+*/
 
 Comp.log('intervals', 'Interval module was initialized')
 }
