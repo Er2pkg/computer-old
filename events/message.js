@@ -1,5 +1,5 @@
 module.exports.run = async (message, emitted) => {
-if (!message.guild || message.author.bot) return
+if (!message || !message.guild || message.author.bot) return
 
 let gld = await Comp.models.get('Guild').findOne({id: message.guild.id})
 if(!gld) {gld = new (Comp.models.get('Guild'))({id: message.guild.id, lang: 1}); gld.save()}
