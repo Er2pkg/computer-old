@@ -4,7 +4,7 @@ console.log('[     vars]', 'Vars initialization...')
 //Расширение дефолтных функций
 Array.prototype.has = function(int) {return int===null?this.length>0:(this.find(i => i == int)?true:false)}
 Math.avg = arr => {arr = arr.filter(i => parseInt(i)).map(i => parseInt(i)); return arr.reduce((a,b)=>a+b)/arr.length}
-Comp.cap = (i, n = 1) => {if(Array.isArray(i))return i.map(x => Comp.cap(x));i=i.split('');i[n-1]?i[n-1]=i[n-1].toUpperCase():'';return i.join('')}
+Comp.cap = (i, n = 1) => {if(Array.isArray(i))return i.map(x => Comp.cap(x,n));i=i.split('');i[n-1]?i[n-1]=i[n-1].toUpperCase():'';return i.join('')}
 Comp.space = (i, len = 3, ind = '+', j = ' ') => {i=i.split('');if(i.length>=len)return i.join('');else{ind=='+'?i.push(j):i.unshift(j); return Comp.space(i.join(''),len,ind,j)}}
 String.prototype.space = function(len,ind,j){return Comp.space(this,len,ind,j)}
 String.prototype.capitalize = function(n){return Comp.cap(this,n)}
@@ -36,8 +36,8 @@ Comp.DBtables = [
 Comp.client.login(process.env.ClientToken).then(() => delete process.env.ClientToken).catch(() => console.log('CLIENT AUTH FAILED'))
 
 Comp.owners = new Comp.Collection()
-Comp.owners.set('544031928358273045', 'stalin')
-Comp.owners.set('441954631539490857', 'lenin')
+Comp.owners.set('544031928358273045', 'er2')
+Comp.owners.set('441954631539490857', 'vadim')
 
 Comp.sleep = (ms=500) => new Promise(r => setTimeout(r,ms))
 Comp.succ = (text, l='ru') => new Comp.Embed().setColor('55ff55').setAuthor(Comp.locale.find('funcs', 'succ', l),Comp.client.user.avatarURL()).setDescription(text?`**${text}**`:'')
@@ -76,7 +76,7 @@ Comp.safeEval = function (code, context, opts) {
     if (!item || typeof item.constructor !== 'function') return
       c[key].constructor = undefined
   })}
-  code = resultKey + '=' + code
+  code = 'Function = undefined; ('+clr+')(this)\n' + resultKey + '=' + code
   if (context) {
     Object.keys(context).forEach(k => {
       clr(context[k])
