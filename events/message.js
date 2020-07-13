@@ -1,4 +1,4 @@
-module.exports.run = async (message, emitted) => {
+﻿module.exports.run = async (message, emitted) => {
 if (!message || !message.guild || message.author.bot) return
 
 let gld = await Comp.models.get('Guild').findOne({id: message.guild.id})
@@ -36,14 +36,17 @@ message.flags = message.args.filter(i => i.match(/--(\w{1,})/gi)).map(i => i.sli
 message.devMode = message.flags.has('dev')
 message.command = message.args.shift().toLowerCase()
 
+if(Comp.blacklist.includes(message.author.id))
+return message.react('🚫')
+
 if(!message.command) return message.reply(locale('events', 'message')[0])
 
 let cmd = Comp.client.commands.cache.find(c => [c.info.regex, c.info.engregex].find(x => x?message.command.match(new RegExp(x, 'gi')):false))
 if(cmd) {
-let cdsecs = 5
+let cdsecs = 10
 if(Comp.cd.get(message.author.id)) {
-let time = Math.ceil((Comp.cd.get(message.author.id).ts - Date.now()) / 1000)
-if(time <= 0) delete Comp.cd.get(message.author.id)
+let time = Math.ceil((Comp.cd.get(message.author.id).ts - Date.now()) / 1000)||cdsecs
+if(time <= 0) Comp.cd.delete(message.author.id)
 else return message.reply(locale('events', 'message')[3]+time +' '+Comp.declOfNum(time, locale('events', 'message')[4])).then(o=>o.delete({timeout: time*1000}))
 }
 else if(!Comp.owners.get(message.author.id)) Comp.cd.set(message.author.id, {ts: Date.now() + cdsecs * 1000})

@@ -8,6 +8,7 @@ engargs: '<code>',
 desc: 'Эмулирует код',
 engdesc: 'Evalute the code',
 examples: ['\'2+2\'', "\"[\'hello\', \'world\'].capitalize()\""],
+private: true,
 }
 module.exports.run = (message, ph) => {
 message.channel.startTyping()

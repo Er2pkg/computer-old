@@ -35,6 +35,8 @@ Comp.DBtables = [
 
 Comp.client.login(process.env.ClientToken).then(() => delete process.env.ClientToken).catch(() => console.log('CLIENT AUTH FAILED'))
 
+Comp.blacklist = ['719171112604532817']
+
 Comp.owners = new Comp.Collection()
 Comp.owners.set('544031928358273045', 'er2')
 Comp.owners.set('441954631539490857', 'vadim')
