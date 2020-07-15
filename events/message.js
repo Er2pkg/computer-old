@@ -17,14 +17,12 @@ moduls.forEach(h => h.run(message, message.glang, emitted, locale))
 if(!message.prefix && (!emitted || (emitted && emitted == 0))) {
 if(Comp.unxp.has(message.author.id) || message.channel.id == '693046024146518107') return
 Comp.client.stats.msgs++
-let row = await Comp.models.get('XP').findOne({id: message.author.id})
-if(!row) row = new (Comp.models.get('XP'))({id: message.author.id, xp: message.xp})
-else {
-row.xp = row.xp + message.xp
-if(message.xp <= 0 && row.lvl >= 1) row.xp += message.xp
-if(message.xp <= 0 && row.xp + message.xp <= 0 && row.lvl > 1) {row.xp = Comp.xpFormule(row.lvl-1)+message.xp; row.lvl = row.lvl-1; return row.save()}
-if(row.xp + message.xp >= Comp.xpFormule(row.lvl)) row.xp = 0, row.lvl = row.lvl + 1
-}
+let row = await Comp.models.get('User').findOne({id: message.author.id})
+if(!row) row = new (Comp.models.get('User'))({id: message.author.id})
+row.profile.xp = row.profile.xp + message.xp
+if(message.xp <= 0 && row.profile.lvl >= 1) row.profile.xp += message.xp
+if(message.xp <= 0 && row.profile.xp + message.xp <= 0 && row.profile.lvl > 1) {row.profile.xp = Comp.xpFormule(row.profile.lvl-1)+message.xp; row.profile.lvl = row.profile.lvl-1; return row.save()}
+if(row.profile.xp + message.xp >= Comp.xpFormule(row.profile.lvl)) row.profile.xp = 0, row.profile.lvl = row.profile.lvl + 1
 row.save()
 }
 
@@ -33,11 +31,12 @@ else message.xp = 0
 
 message.args = message.content.slice(message.prefix.length).trim().split(/ +/g)
 message.flags = message.args.filter(i => i.match(/--(\w{1,})/gi)).map(i => i.slice(2))
+message.args = message.args.filter(i => !i.match(/--(\w{1,})/gi))
 message.devMode = message.flags.has('dev')
 message.command = message.args.shift().toLowerCase()
 
 if(Comp.blacklist.includes(message.author.id))
-return message.react('🚫')
+return message.react(Comp.emojis.deny)
 
 if(!message.command) return message.reply(locale('events', 'message')[0])
 
@@ -51,6 +50,12 @@ else return message.reply(locale('events', 'message')[3]+time +' '+Comp.declOfNu
 }
 else if(!Comp.owners.get(message.author.id)) Comp.cd.set(message.author.id, {ts: Date.now() + cdsecs * 1000})
 Comp.client.stats.cmds.total++, Comp.client.stats.cmds.perHour++
-if ((!cmd.info.private || Comp.owners.get(message.author.id)) && cmd.run) {cmd.uses++; return cmd.run(message, locale('cmds', (cmd.info.engname||cmd.info.name)))}
+if (cmd.run) {
+if(cmd.info.private && !Comp.owners.get(message.author.id))
+return message.react(Comp.emojis.deny)
+cmd.uses++
+return cmd.run(message, locale('cmds', (cmd.info.engname||cmd.info.name)))
+}
+
 }
 }

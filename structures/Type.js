@@ -1,6 +1,8 @@
-const Collection = (require('discord.js')).Collection
-module.exports = class Type {
-constructor(a, data) {
+const Collection = (require('discord.js')).Collection,
+Base = (require('discord.js')).Base
+module.exports = class Type extends Base {
+constructor(client, data) {
+super(client)
 this.type = data.type
 this.elements = new Collection()
 data.elements.forEach(i =>

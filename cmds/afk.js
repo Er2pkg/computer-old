@@ -10,20 +10,22 @@ engdesc: 'Will say what you left to AFK',
 examples: ["'поесть'"],
 }
 module.exports.run = async (message, ph) => {
-const row = await Comp.models.get('AFK').findOne({id: message.author.id})
+const row = await Comp.models.get('User').findOne({id: message.author.id})
 message.channel.startTyping()
-if(!row) {await Comp.models.get('AFK').create({id: message.author.id, yes: 2, reason: message.args.join(' ')})
+if(!row) {await Comp.models.get('User').create({id: message.author.id, AFK: {isAFK: true, reason: message.args.join(' ')}})
 message.channel.stopTyping()
 return message.channel.send(`${ph[0]+' '+message.member.displayName+' '+ph[1]}\n${message.args.join(' ')}`)}
-if(row.yes == 1) {
-row.yes = 2
-row.reason = message.args.join(' ')
+if(!row.AFK.isAFK) {
+row.AFK.isAFK = true
+row.AFK.reason = message.args.join(' ')
 row.save()
 message.channel.stopTyping()
 return message.channel.send(`${ph[0]+' '+message.member.displayName+' '+ph[1]}\n${message.args.join(' ')}`)
 }
 else {
-row.remove()
+row.AFK.isAFK = false
+row.AFK.reason = ''
+row.save()
 message.channel.stopTyping()
 return message.channel.send(`${ph[0]+' '+message.member.displayName+' '+ph[2]}`)}
 }

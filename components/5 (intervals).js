@@ -1,16 +1,15 @@
 module.exports.run = () => {
 Comp.log('intervals', 'Interval module initialization...')
 
-Comp.cmdPH = setInterval(() => Comp.client.stats.cmds.perHour = 0, 3600000)
+Comp.cmdPH = setInterval(() => {
+Comp.client.stats.cmds.perHour = 0
+Comp.client.user.setActivity(`${Comp.client.prefixes[7]}help | Computer ${Comp.beta?'Beta':'Stable'}`)
+}, 3600000)
 
 Comp.RS = setInterval(() => {
 if(!Comp.client.stats) return
 Comp.cpuse.usageAvg().then(i => Comp.client.stats.cpu = i)
 Comp.client.stats.users = {users: Comp.client.users.cache.filter(u => !u.bot).size, bots: Comp.client.users.cache.filter(u => u.bot).size}
-let i = 0,
-status = [`ЭВМ ${Comp.beta?'бета':'им. Сталина.'}`, `${Comp.declOfNum(Comp.client.stats.users.users, ['товарищ', 'товарища', 'товарищей'], 1)}`]
-if(Comp.client.user.presence.activities[0].name.includes(`${Comp.client.prefixes[0]} помогай | ${status[0]}`)) i = 1
-Comp.client.user.setActivity(`${Comp.client.prefixes[0]} помогай | ` + status[i], {type: 'PLAYING'})
 }, 5000)
 
 Comp.cStat = setInterval(() =>

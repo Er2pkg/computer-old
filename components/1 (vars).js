@@ -28,14 +28,15 @@ Comp.unxp = new Set()
 Comp.cd = new Comp.Collection()
 
 Comp.DBtables = [
-'AFK', 'Guild', 'Ignore',
-'Locale', 'Mute', 'Note',
-'Pred', 'XP', 'User',
+'Guild', 'User',
 ]
 
 Comp.client.login(process.env.ClientToken).then(() => delete process.env.ClientToken).catch(() => console.log('CLIENT AUTH FAILED'))
 
 Comp.blacklist = ['719171112604532817']
+Comp.emojis = {
+deny: '711931218383601695',
+}
 
 Comp.owners = new Comp.Collection()
 Comp.owners.set('544031928358273045', 'er2')

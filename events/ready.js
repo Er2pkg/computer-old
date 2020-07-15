@@ -10,7 +10,7 @@ Comp.SDC.setAutoPost(Comp.client)
 }
 
 Comp.client.prefixes = Comp.beta?['бета', 'бэта', 'бето', 'бэто', `<@${Comp.client.user.id}>`, 'beta', 'beto', 'b.', 'б.', 'бю', `<@!${Comp.client.user.id}>`]:['комп', 'комб', 'компутер', 'компутатор', `<@${Comp.client.user.id}>`, 'comp', 'comb', 'c.', 'к.', 'кю', `<@!${Comp.client.user.id}>`]
-Comp.client.user.setActivity(`${Comp.client.prefixes[0]} помогай | Computer ${Comp.beta?'бета':'им. Сталина.'}`)
+Comp.client.user.setActivity(`${Comp.client.prefixes[7]}help | Computer ${Comp.beta?'Beta':'Stable'}`)
 
 Comp.cpuse.usageAvg().then(i =>
 Comp.client.stats = {cmds: {total: 0, perHour: 0}, users: {users: Comp.client.users.cache.filter(u => !u.bot).size, bots: Comp.client.users.cache.filter(u => u.bot).size}, msgs: 0, cpu: i})

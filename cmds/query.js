@@ -3,8 +3,9 @@ name: 'запрос',
 engname: 'query',
 regex: 'з[ао]про[сз]',
 engregex: '[qk]y?uer{1,}[yi]',
+desc: 'Запрос к базе данных',
+engdesc: 'Query to database',
 private: true,
-hidden: true,
 }
 module.exports.run = message =>
 Comp.models.get(message.args[0])[message.args[1]](eval('Object('+message.args.slice(2).join(' ')+')'), (err, rows) => {
