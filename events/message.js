@@ -46,9 +46,16 @@ let cdsecs = 10
 if(Comp.cd.get(message.author.id)) {
 let time = Math.ceil((Comp.cd.get(message.author.id).ts - Date.now()) / 1000)||cdsecs
 if(time <= 0) Comp.cd.delete(message.author.id)
-else return message.reply(locale('events', 'message')[3]+time +' '+Comp.declOfNum(time, locale('events', 'message')[4])).then(o=>o.delete({timeout: time*1000}))
+else {
+Comp.reactDel(message, 'wait', time*1000)
+//message.reply(locale('events', 'message')[3]+time +' '+Comp.declOfNum(time, locale('events', 'message')[4])).then(o=>o.delete({timeout: time*1000}))
+await Comp.sleep(time*1000)
+Comp.reactDel(message, 'allow', 2000)
 }
-else if(!Comp.owners.get(message.author.id)) Comp.cd.set(message.author.id, {ts: Date.now() + cdsecs * 1000})
+}
+else
+//if(!Comp.owners.get(message.author.id))
+Comp.cd.set(message.author.id, {ts: Date.now() + cdsecs * 1000})
 Comp.client.stats.cmds.total++, Comp.client.stats.cmds.perHour++
 if (cmd.run) {
 if(cmd.info.private && !Comp.owners.get(message.author.id))

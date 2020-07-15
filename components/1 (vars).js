@@ -36,7 +36,12 @@ Comp.client.login(process.env.ClientToken).then(() => delete process.env.ClientT
 Comp.blacklist = ['719171112604532817']
 Comp.emojis = {
 deny: '711931218383601695',
+allow: '711931328320372766',
+wait: '711931270778585261',
+unknown: '711931378916130848',
 }
+Comp.getEmoji = em => Comp.emojis[em]?`<:${em}:${Comp.emojis[em]}>`:''
+Comp.reactDel = (m, em, t = 5000) => m.react(Comp.emojis[em]||em).then(e=>Comp.sleep(t).then(()=>e.users.remove(m.client.user.id)))
 
 Comp.owners = new Comp.Collection()
 Comp.owners.set('544031928358273045', 'er2')
