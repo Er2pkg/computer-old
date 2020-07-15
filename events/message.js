@@ -48,7 +48,6 @@ let time = Math.ceil((Comp.cd.get(message.author.id).ts - Date.now()) / 1000)||c
 if(time <= 0) Comp.cd.delete(message.author.id)
 else {
 Comp.reactDel(message, 'wait', time*1000)
-//message.reply(locale('events', 'message')[3]+time +' '+Comp.declOfNum(time, locale('events', 'message')[4])).then(o=>o.delete({timeout: time*1000}))
 await Comp.sleep(time*1000)
 Comp.reactDel(message, 'allow', 2000)
 }

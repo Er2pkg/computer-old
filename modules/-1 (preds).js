@@ -1,5 +1,10 @@
 module.exports.run = message => {
 
+/*
+НЕ РАБОТАЕТ, ЛУЧШЕ НЕ ТУПО ДОБАВЛЯТЬ CACHE,
+А ПОЛНОСТЬЮ ПЕРЕРАБОТАТЬ КОД
+*/
+
 //Анти-инвайт им. Сталина
 Comp.invites = []
 Comp.client.guilds.cache.forEach(async guild => {
