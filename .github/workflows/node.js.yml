@@ -1,18 +1,26 @@
-- name: Setup Node.js environment
-  uses: actions/setup-node@v2.1.0
+name: Node CI
+
+on: push
 
 jobs:
-  build:
-    runs-on: ubuntu-16.04
+  buildAndTest:
+
+    runs-on: ubuntu-latest
+
     strategy:
       matrix:
-        node: [ '12', '14' ]
-    name: Node ${{ matrix.node }} sample
+        node-version: [12.x, 14.x]
+
     steps:
-      - uses: actions/checkout@v2
-      - name: Setup node
-        uses: actions/setup-node@v1
-        with:
-          node-version: ${{ matrix.node }}
-      - run: npm install
-      - run: npm test
+    - uses: actions/checkout@v1
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - name: Install, build, test
+      run: |
+        npm install
+        # npm run build
+        npm test
+      env:
+        CI: true
