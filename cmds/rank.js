@@ -19,7 +19,7 @@ let st = user.presence.status.toString(),
 avatar = await Comp.jimp.read(user.displayAvatarURL({format: 'png'})),
 bar = await new Comp.jimp(1024, 200),
 bg = await Comp.jimp.read(row.bg),
-barr = await new Comp.jimp(Math.ceil(row.xp / (Comp.xpFormule(row.lvl) / 100) * 8)+10, 30, ('#' + (row.accent && row.accent!=='null'?row.accent:(bg.getPixelColor(100, 100).toString(16).slice(0, -2))))),
+barr = await new Comp.jimp(Math.ceil(Comp.getRxp(row.xp) / (Comp.getLvlXp(row.xp) / 100) * 8)+10, 30, ('#' + (row.accent && row.accent!=='null'?row.accent:(bg.getPixelColor(100, 100).toString(16).slice(0, -2))))),
 xpb = await Comp.jimp.read('https://cdn.discordapp.com/attachments/696688365847707681/702882414183055390/xpbar.png'),
 statuz = await Comp.jimp.read('https://cdn.discordapp.com/attachments/696688365847707681/702882413814218762/status.png'),
 status = await Comp.jimp.read('./assets/'+user.presence.status + '.png'),
@@ -40,8 +40,8 @@ await bg
 .print(fnt2, xcords[st[0]]+143, 165, st[0])
 .print(fnt1, 170, 165, st.slice(1))
 .print(fnt3, 245, 0, user.tag)
-.print(fnt2, 245, 75, 'lvl: ' + row.lvl + ' money: ' + row.money)
-.print(fnt2, 245, 105, 'xp: '+ row.xp + '/' + Comp.xpFormule(row.lvl))
+.print(fnt2, 245, 75, 'lvl: ' + Comp.getLvl(row.xp) + ' money: ' + row.money)
+.print(fnt2, 245, 105, 'xp: '+ Comp.getRxp(row.xp) + '/' + Comp.getLvlXp(row.xp))
 .getBuffer(Comp.jimp.MIME_PNG, (err, buff) => {
 if(err) return message.reply(err)
 message.channel.send('Made for '+Math.ceil((Date.now() - (message.editedTimestamp?message.editedTimestamp:message.createdTimestamp)) / 1000) + ' seconds', {files: [new Comp.Discord.MessageAttachment(buff, 'rank.png')]})
@@ -50,5 +50,5 @@ message.channel.send('Made for '+Math.ceil((Date.now() - (message.editedTimestam
 const row = await Comp.models.get('User').findOne({id: user.id})
 if(!row) return message.reply(ph[0])
 if(!['prev', 'preview'].find(i=>message.flags.has(i))) rcard(row.profile)
-else rcard((new (Comp.models.get('User'))({id: user.id, profile: {lvl: 12, money: 228, xp: 768}})).profile)
+else rcard((new (Comp.models.get('User'))({id: user.id, profile: {money: 228, xp: Comp.xpLvls[12]+768}})).profile)
 }

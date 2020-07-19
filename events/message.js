@@ -11,18 +11,25 @@ message.prefix = Comp.client.prefixes.find(p => message.content.toLowerCase().st
 const moduls = Comp.types.cache.get('modules').elements.filter(i => !i.disabled && gld.modules.find(x => i.name.startsWith(x.toString()))),
 locale = (a,b) => Comp.locale.find(a, b, message.lang)
 
+if(!message.prefix && (!emitted || (emitted && emitted == 0))) {
+let cd = Comp.cd.get(message.author.id)
+if(cd && cd.xp && (cd.xp - Date.now()) > 0)
+message.xp = 0
+else if(!cd)
+Comp.cd.set(message.author.id, {xp: Date.now() + 60000})
+else if(cd.xp && cd.xp - Date.now() <= 0)
+cd.xp = Date.now() + 60000
+}
+
 if(moduls.size > 0)
 moduls.forEach(h => h.run(message, message.glang, emitted, locale))
 
 if(!message.prefix && (!emitted || (emitted && emitted == 0))) {
-if(Comp.unxp.has(message.author.id) || message.channel.id == '693046024146518107') return
+//if(Comp.unxp.has(message.author.id) || message.channel.id == '693046024146518107') return
 Comp.client.stats.msgs++
 let row = await Comp.models.get('User').findOne({id: message.author.id})
 if(!row) row = new (Comp.models.get('User'))({id: message.author.id})
 row.profile.xp = row.profile.xp + message.xp
-if(message.xp <= 0 && row.profile.lvl >= 1) row.profile.xp += message.xp
-if(message.xp <= 0 && row.profile.xp + message.xp <= 0 && row.profile.lvl > 1) {row.profile.xp = Comp.xpFormule(row.profile.lvl-1)+message.xp; row.profile.lvl = row.profile.lvl-1; return row.save()}
-if(row.profile.xp + message.xp >= Comp.xpFormule(row.profile.lvl)) row.profile.xp = 0, row.profile.lvl = row.profile.lvl + 1
 row.save()
 }
 
@@ -42,10 +49,11 @@ if(!message.command) return message.reply(locale('events', 'message')[0])
 
 let cmd = Comp.client.commands.cache.find(c => [c.info.regex, c.info.engregex].find(x => x?message.command.match(new RegExp(x, 'gi')):false))
 if(cmd) {
-let cdsecs = 10
-if(Comp.cd.get(message.author.id)) {
-let time = Math.ceil((Comp.cd.get(message.author.id).ts - Date.now()) / 1000)||cdsecs
-if(time <= 0) Comp.cd.delete(message.author.id)
+let cdsecs = 5,
+cd = Comp.cd.get(message.author.id)
+if(cd && cd.cmds) {
+let time = Math.ceil((cd.cmds - Date.now()) / 1000)||cdsecs
+if(time <= 0) delete cd.cmds
 else {
 Comp.reactDel(message, 'wait', time*1000)
 await Comp.sleep(time*1000)
@@ -53,8 +61,9 @@ Comp.reactDel(message, 'allow', 2000)
 }
 }
 else
-//if(!Comp.owners.get(message.author.id))
-Comp.cd.set(message.author.id, {ts: Date.now() + cdsecs * 1000})
+if(!cd)
+Comp.cd.set(message.author.id, {cmds: Date.now() + cdsecs * 1000})
+else cd.cmds = Date.now() + cdsecs * 1000
 Comp.client.stats.cmds.total++, Comp.client.stats.cmds.perHour++
 if (cmd.run) {
 if(cmd.info.private && !Comp.owners.get(message.author.id))

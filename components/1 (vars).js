@@ -43,15 +43,28 @@ unknown: '711931378916130848',
 Comp.getEmoji = em => Comp.emojis[em]?`<:${em}:${Comp.emojis[em]}>`:''
 Comp.reactDel = (m, em, t = 5000) => m.react(Comp.emojis[em]||em).then(e=>Comp.sleep(t).then(()=>e.users.remove(m.client.user.id)))
 
-Comp.owners = new Comp.Collection()
-Comp.owners.set('544031928358273045', 'er2')
-Comp.owners.set('441954631539490857', 'vadim')
+Comp.owners = new Comp.Collection([
+['544031928358273045', 'er2'],
+['441954631539490857', 'vadim'],
+['734445504032669786', 'er22'],
+])
 
 Comp.sleep = (ms=500) => new Promise(r => setTimeout(r,ms))
 Comp.succ = (text, l='ru') => new Comp.Embed().setColor('55ff55').setAuthor(Comp.locale.find('funcs', 'succ', l),Comp.client.user.avatarURL()).setDescription(text?`**${text}**`:'')
 Comp.sN = (a, b) => {if(a<b)return -1;if(a>b) return 1;return 0}
 Comp.pS = Comp.Pagination.showPage
-Comp.xpFormule = lvl => (5 * (lvl ^ 2) + 50 * lvl + 100)
+
+Comp.xpFormule = lvl => (5 * (lvl ** 2) + 50 * lvl + 100)
+Comp.xpLvls = new Array(500).fill(0).map((d,i)=>Comp.xpFormule(i))
+Comp.getLvlRxp = xp => {
+let rxp = xp, lvl = 0
+for(; rxp >= Comp.xpLvls[lvl]; rxp-=Comp.xpLvls[lvl], lvl++) 1
+return [lvl, rxp]
+}
+Comp.getLvl = xp => Comp.getLvlRxp(xp)[0]
+Comp.getRxp = xp => Comp.getLvlRxp(xp)[1]
+Comp.getLvlXp = xp => Comp.xpLvls[Comp.getLvl(xp)]
+
 Comp.send = (id, message) => id.send(message)
 Comp.addCommas = int => `${int.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`
 Comp.random = (min, max) => Math.floor(Math.random()*(max-min+1))+min
