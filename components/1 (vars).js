@@ -9,6 +9,7 @@ Comp.space = (i, len = 3, ind = '+', j = ' ') => {i=i.split('');if(i.length>=len
 String.prototype.space = function(len,ind,j){return Comp.space(this,len,ind,j)}
 String.prototype.capitalize = function(n){return Comp.cap(this,n)}
 Array.prototype.capitalize = function(n){return Comp.cap(this,n)}
+Array.prototype.each = function(...a){this.forEach(...a); return this}
 
 Comp.Embed = Comp.Discord.MessageEmbed
 Comp.Collection = Comp.Discord.Collection
