@@ -1,5 +1,6 @@
 module.exports.run = async () => {
 
+Comp.log('client', 'Logged on as '+Comp.client.user.tag)
 Comp.log('client', 'Client loading...')
 
 //SDC

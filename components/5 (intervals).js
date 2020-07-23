@@ -1,4 +1,6 @@
-const map = (u, x, p) => `${p+1}. ${(u||{}).tag||'unknown#0000'} - ${Comp.getLvl(x.profile.xp)} lvl ${Comp.getRxp(x.profile.xp)}/${Comp.getLvlXp(x.profile.xp)} xp`
+const map = (u,x,p) => `${p+1}. ${(u||{}).tag||'unknown#0000'}${Comp.owners.get(x.id)?Comp.getEmoji('crown'):''} - ${Comp.getLvl(x.profile.xp)} lvl ${Comp.getRxp(x.profile.xp)}/${Comp.getLvlXp(x.profile.xp)} xp`,
+pl = 15,
+m = ['wait', 'unknown', 'copper']
 module.exports.run = () => {
 Comp.log('intervals', 'Interval module initialization...')
 
@@ -40,20 +42,22 @@ Comp.client.channels.cache.get('695980819650576384').messages.fetch('73584611653
 Comp.DB.get('User').find({}).then(async i=> {
 i = i
 .sort((a,b)=>b.profile.xp-a.profile.xp)
-.filter((x,p)=>x.profile.xp>0&&(p+1)<=15)
+.filter((x,p)=>x.profile.xp>0&&(p+1)<=pl)
 i = await Promise.all(i.map((x, p) =>
 Comp.client.users.fetch(x.id)
 .then(u=>x=map(u,x,p))
 .catch(e=>x=map({},x,p))
 ))
+for(let x=0;x<m.length;x++)
+i[x] = Comp.getEmoji(m[x]) + i[x].slice(2)
 msg.edit(
 new Comp.Embed()
 .setColor('00fff0')
-.addField('ТОП 15', i)
+.addField('ТОП '+pl, i)
 )
-.catch(e =>msg.edit(new Comp.Embed().setColor('ff55ff').setTitle('ОШИБКА').setDescription(e)))
+.catch(e =>msg.edit(new Comp.Embed().setColor('ff0055').setTitle('ОШИБКА').setDescription(e)))
 })
-.catch(e =>msg.edit(new Comp.Embed().setColor('ff55ff').setTitle('ОШИБКА').setDescription(e)))
+.catch(e =>msg.edit(new Comp.Embed().setColor('ff0055').setTitle('ОШИБКА').setDescription(e)))
 })
 }, 15000)
 

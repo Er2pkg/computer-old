@@ -32,7 +32,7 @@ Comp.DBtables = [
 'Guild', 'User',
 ]
 
-Comp.client.login(process.env.ClientToken).then(() => delete process.env.ClientToken).catch(() => console.log('CLIENT AUTH FAILED'))
+Comp.client.login(process.env.ClientToken).then(() => delete process.env.ClientToken).catch(e => console.log('CLIENT AUTH FAILED\n',e))
 
 Comp.blacklist = ['719171112604532817']
 Comp.emojis = {
@@ -40,6 +40,8 @@ deny: '711931218383601695',
 allow: '711931328320372766',
 wait: '711931270778585261',
 unknown: '711931378916130848',
+crown: '735874648574656605',
+copper: '735862582639984650',
 }
 Comp.getEmoji = em => Comp.emojis[em]?`<:${em}:${Comp.emojis[em]}>`:''
 Comp.reactDel = (m, em, t = 5000) => m.react(Comp.emojis[em]||em).then(e=>Comp.sleep(t).then(()=>e.users.remove(m.client.user.id)))
