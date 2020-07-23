@@ -1,3 +1,4 @@
+const map = (u, x, p) => `${p+1}. ${(u||{}).tag||'unknown#0000'} - ${Comp.getLvl(x.profile.xp)} lvl ${Comp.getRxp(x.profile.xp)}/${Comp.getLvlXp(x.profile.xp)} xp`
 module.exports.run = () => {
 Comp.log('intervals', 'Interval module initialization...')
 
@@ -12,7 +13,7 @@ Comp.cpuse.usageAvg().then(i => Comp.client.stats.cpu = i)
 Comp.client.stats.users = {users: Comp.client.users.cache.filter(u => !u.bot).size, bots: Comp.client.users.cache.filter(u => u.bot).size}
 }, 5000)
 
-Comp.cStat = setInterval(() =>
+Comp.cStat = setInterval(() => {
 Comp.client.channels.cache.get('695980819650576384').messages.fetch(Comp.beta?'698508253205889144':'695981096202010654').then(msg => 
 msg.edit(new Comp.Embed()
 .setTitle(`${Comp.beta?'[BETA] ':''}Бот ${Comp.client.user.username}`)
@@ -33,24 +34,28 @@ msg.edit(new Comp.Embed()
 .addField('Включен',Comp.client.readyAt.toLocaleString('ru-RU', {timeZone: 'Europe/Moscow', hour12: false}) + ' MSK', true)
 .addField('Московское время', new Date(Date.now()).toLocaleString('ru-RU', {timeZone: 'Europe/Moscow', hour12: false}).slice(0, -3), true)
 //.addField(`Последний коммит`, '...', true)
-.setColor(Comp.beta?'BLURPLE':'00fff0'))), 15000)
-
-/*
-Comp.intDB = setInterval(async () => {
-const rows = await Comp.models.get('Mute').find({})
-rows.forEach(row => {
-let role = Comp.client.guilds.cache.get(row.guild).roles.cache.find(r => r.name.toLowerCase().match(/(mut[ei]?)[dt]?|замучен{1,}ые/) && r.editable),
-m = Comp.client.guilds.cache.get(row.guild).members.cache.get(row.id)
-if(!(role && m)) return
-let inmute = (row && row.inmute?row.inmute:0)
-if(inmute == 1 && row && row.unmute_time && row.unmute_time <= Date.now()) inmute = 0, row.remove(), console.log('unmute')
-else if(inmute == 0 && row && row.unmute_time && row.unmute_time > Date.now()) inmute = 1, row.inmute=1, row.reason=(row.reason?row.reason+'\nauto fix':'auto fix'), row.mute_time=Date.now(), console.log('mute')
-row.save()
-if(inmute == 0 && m.roles.cache.has(role.id)) m.roles.remove(role.id).catch(() => console.log('fuck')), console.log('remove role')
-if(inmute == 1 && !m.roles.cache.has(role.id)) m.roles.add(role.id).catch(() => console.log('fuck')), console.log('add role') 
+.setColor(Comp.beta?'BLURPLE':'00fff0')))
+if(Comp.beta) return
+Comp.client.channels.cache.get('695980819650576384').messages.fetch('735846116532158555').then(msg => {
+Comp.DB.get('User').find({}).then(async i=> {
+i = i
+.sort((a,b)=>b.profile.xp-a.profile.xp)
+.filter((x,p)=>x.profile.xp>0&&(p+1)<=15)
+i = await Promise.all(i.map((x, p) =>
+Comp.client.users.fetch(x.id)
+.then(u=>x=map(u,x,p))
+.catch(e=>x=map({},x,p))
+))
+msg.edit(
+new Comp.Embed()
+.setColor('00fff0')
+.addField('ТОП 15', i)
+)
+.catch(e =>msg.edit(new Comp.Embed().setColor('ff55ff').setTitle('ОШИБКА').setDescription(e)))
 })
-}, 5000)
-*/
+.catch(e =>msg.edit(new Comp.Embed().setColor('ff55ff').setTitle('ОШИБКА').setDescription(e)))
+})
+}, 15000)
 
 Comp.log('intervals', 'Interval module was initialized')
 }
