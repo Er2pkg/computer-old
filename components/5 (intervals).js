@@ -16,27 +16,45 @@ Comp.client.stats.users = {users: Comp.client.users.cache.filter(u => !u.bot).si
 }, 5000)
 
 Comp.cStat = setInterval(() => {
+let embed, info = [
+`${Comp.beta?'[BETA] ':''}Бот ${Comp.client.user.tag}`,
+{
+key: 'Пинг, ОЗУ, процессор',
+val: `${Comp.addCommas(Math.round(Comp.client.ws.ping))} ms, ${(process.memoryUsage().rss / 1024 / 1024 / 1024).toFixed(2)} / ${Math.floor(Comp.os.totalmem() / 1024 / 1024 / 1024)} ГБ, ${Comp.client.stats.cpu}`
+},
+{
+key: 'Команд',
+val: `Всего: ${Comp.client.commands.cache.size}
+Видны и нет ограничений: ${Comp.client.commands.cache.filter(c => !c.info.private && !c.info.hidden).size}
+Страниц в команде помощи: ${Comp.addCommas(Math.ceil(Comp.client.commands.cache.filter(c => !c.info.hidden).size / 15))}`
+},
+{
+key: 'Использованных команд, за час, сообщений',
+val: `${Comp.addCommas(Comp.client.stats.cmds.total)}, ${Comp.addCommas(Comp.client.stats.cmds.perHour)}, ${Comp.addCommas(Comp.client.stats.msgs)}`
+},
+{
+key: 'Товарищей, каналов, серверов',
+val: `${Comp.addCommas(Comp.client.users.cache.size)} всего (${Comp.declOfNum(Comp.client.stats.users.users, ['товарищ', 'товарища', 'товарищей'], 1)}, ${Comp.declOfNum(Comp.client.stats.users.bots, ['бот', 'бота', 'ботов'], 1)})
+${Comp.addCommas(Comp.client.channels.cache.size)}, ${Comp.addCommas(Comp.client.guilds.cache.size)}`
+},
+{
+key: 'Эмодзи, подключенные голосовые каналы, работает',
+val: `${Comp.addCommas(Comp.client.emojis.cache.size)}, ${Comp.addCommas(Comp.client.voice.connections.size)}, ${Comp.declOfNum(Math.floor(Comp.client.uptime / (1000 * 60 * 60)), ['час', 'часа', 'часов'], 1)} и ${Comp.declOfNum(Math.round(Comp.client.uptime / (1000 * 60)) % 60, ['минуту', 'минуты', 'минут'], 1)}`
+},
+{
+key: 'Включен, московское время',
+val: `${Comp.client.readyAt.toLocaleString('ru-RU', {timeZone: 'Europe/Moscow', hour12: false})} MSK, ${new Date(Date.now()).toLocaleString('ru-RU', {timeZone: 'Europe/Moscow', hour12: false}).slice(0, -3)}`
+}]
+info.forEach(i=>!i.val?'':i.val=i.val.split('\n').map(x=>'> '+x).join('\n'))
+embed = new Comp.Embed()
+.setTitle(info[0])
+.setThumbnail(Comp.client.user.displayAvatarURL({format: 'png'}))
+.setColor(Comp.beta?'BLURPLE':'00fff0')
+info
+.filter(i=>typeof i !=='string')
+.forEach(i=>embed.addField(i.key, i.val))
 Comp.client.channels.cache.get('695980819650576384').messages.fetch(Comp.beta?'698508253205889144':'695981096202010654').then(msg => 
-msg.edit(new Comp.Embed()
-.setTitle(`${Comp.beta?'[BETA] ':''}Бот ${Comp.client.user.username}`)
-.setThumbnail(Comp.client.user.avatarURL({format: 'png'}))
-.addField('Пинг', `${Comp.addCommas(Math.round(Comp.client.ws.ping))} мс`, true)
-.addField('ОЗУ', `${(process.memoryUsage().rss / 1024 / 1024 / 1024).toFixed(2)} / ${Math.floor(Comp.os.totalmem() / 1024 / 1024 / 1024)} ГБ`, true)
-.addField('Процессор', Comp.client.stats.cpu, true)
-.addField('Команд', 'Всего: ' + Comp.client.commands.cache.size + '\nВидны и нет ограничения прав: ' + Comp.client.commands.cache.filter(c => !c.info.private && !c.info.hidden).size + '\nСтраниц в команде помощи: ' + Comp.addCommas(Math.ceil(Comp.client.commands.cache.filter(c => !c.info.hidden).size / 15)), true)
-.addField('Использованных команд', Comp.addCommas(Comp.client.stats.cmds.total), true)
-.addField('Команды за час', Comp.addCommas(Comp.client.stats.cmds.perHour), true)
-.addField('Сообщений', Comp.addCommas(Comp.client.stats.msgs), true)
-.addField('Товарищей', Comp.addCommas(Comp.client.users.cache.size) + ` всего (${Comp.declOfNum(Comp.client.stats.users.users, ['товарищ', 'товарища', 'товарищей'], 1)}, ${Comp.declOfNum(Comp.client.stats.users.bots, ['бот', 'бота', 'ботов'], 1)})`, true)
-.addField('Каналов', Comp.addCommas(Comp.client.channels.cache.size), true)
-.addField('Серверов', Comp.addCommas(Comp.client.guilds.cache.size), true)
-.addField('Эмодзи', Comp.addCommas(Comp.client.emojis.cache.size), true)
-.addField('Включенные голосовые каналы', Comp.addCommas(Comp.client.voice.connections.size), true)
-.addField('Работает', `${Comp.declOfNum(Math.floor(Comp.client.uptime / (1000 * 60 * 60)), ['час', 'часа', 'часов'], 1)} и ${Comp.declOfNum(Math.round(Comp.client.uptime / (1000 * 60)) % 60, ['минуту', 'минуты', 'минут'], 1)}`, true)
-.addField('Включен',Comp.client.readyAt.toLocaleString('ru-RU', {timeZone: 'Europe/Moscow', hour12: false}) + ' MSK', true)
-.addField('Московское время', new Date(Date.now()).toLocaleString('ru-RU', {timeZone: 'Europe/Moscow', hour12: false}).slice(0, -3), true)
-//.addField(`Последний коммит`, '...', true)
-.setColor(Comp.beta?'BLURPLE':'00fff0')))
+msg.edit(embed))
 if(Comp.beta) return
 Comp.client.channels.cache.get('695980819650576384').messages.fetch('735846116532158555').then(msg => {
 Comp.DB.get('User').find({}).then(async i=> {

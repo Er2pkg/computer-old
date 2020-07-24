@@ -53,7 +53,7 @@ Comp.owners = new Comp.Collection([
 ])
 
 Comp.sleep = (ms=500) => new Promise(r => setTimeout(r,ms))
-Comp.succ = (text, l='ru') => new Comp.Embed().setColor('55ff55').setAuthor(Comp.locale.find('funcs', 'succ', l),Comp.client.user.avatarURL()).setDescription(text?`**${text}**`:'')
+Comp.succ = (text, l='ru', ne=false) => ne?(Comp.locale.find('funcs', 'succ', l)+(text?`\n**${text}**`:'')):(new Comp.Embed().setColor('55ff55').setAuthor(Comp.locale.find('funcs', 'succ', l),Comp.client.user.avatarURL()).setDescription(text?`**${text}**`:''))
 Comp.sN = (a, b) => {if(a<b)return -1;if(a>b) return 1;return 0}
 Comp.pS = Comp.Pagination.showPage
 
@@ -79,11 +79,11 @@ if(['ru','en'].includes(l)) l = Comp.locale.find('funcs', 'pC', l)
 let h = (e, n) => {switch(e) {case 'choose': return l[0]; break; case 'choosed': return (l[1]).replace('a', n); break; case 'error': return l[2]; break}}
 return res(h,l)
 })
-Comp.err = (a, b, c, l = 'ru') => {
+Comp.err = (a, b, c, l = 'ru', ne=false) => {
 l=Comp.locale.find('funcs', 'err', l),
-embed = new Comp.Embed().setAuthor(l[0], Comp.client.user.avatarURL()).addField(l[1], a?a:l[2]).setColor('RED')
-b?embed.addField(l[3],b):''
-c?embed.addField(l[4],c):''
+embed = ne?(`${l[0]}\n${l[1]}\n${a?a:l[2]}`):(new Comp.Embed().setAuthor(l[0], Comp.client.user.avatarURL()).addField(l[1], a?a:l[2]).setColor('RED'))
+b?ne?embed+=`\n${l[3]}\n${b}`:embed.addField(l[3],b):''
+c?ne?embed+=`\n${l[4]}\n${c}`:embed.addField(l[4],c):''
 return embed
 }
 

@@ -34,7 +34,7 @@ if(message.lang == 'ru')
 orr = arr.map((cmd, ind) => `${orr[ind]} ${cmd.info.name} ${cmd.info.args?`\`${cmd.info.args}\``:''} -** ${cmd.info.desc?cmd.info.desc:''} ${cmd.info.private? '(могут исполнить только создатели)' : ''}`)
 else orr = arr.map((cmd, ind) => `${orr[ind]} ${cmd.info.engname} ${cmd.info.engargs?`\`${cmd.info.engargs}\``:''} -** ${cmd.info.engdesc?cmd.info.engdesc:(cmd.info.desc?cmd.info.desc:'')} ${cmd.info.private? '(can run only owners)' : ''}`)
 let ren = c => (new Comp.Embed().setAuthor(ph[0], message.author.displayAvatarURL()).setColor(Comp.beta?'BLURPLE':'00fff0').setDescription(c.content.join('\n')).setFooter(`${ph[6]} ${c.page}/${c.totalPages}`))
-if(message.flags.has('noembed'))
+if(message.flags.has('noembed') || !message.guild.me.hasPermission('EMBED_LINKS'))
 ren = c => `**${ph[0]}**\n${c.content.join('\n')}\n${ph[6]} ${c.page}/${c.totalPages}`
 Comp.Pagination.message(message, ren, orr, 15, page||1)
 }

@@ -9,7 +9,10 @@ args: '<текст>',
 engargs: '<text>',
 }
 module.exports.run = (message, ph) => {
-if(!message.args[0]) return message.channel.send(Comp.err(ph[0], ph[1], 'ghbdtn', message.lang))
+let ne = false
+if(message.flags.has('noembed') || !message.guild.me.hasPermission('EMBED_LINKS'))
+ne = true
+if(!message.args[0]) return message.channel.send(Comp.err(ph[0], ph[1], 'ghbdtn', message.lang, ne))
 let replacer = {"q":"й", "w":"ц","e":"у","r":"к", "t":"е", "y":"н", "u":"г","i":"ш", "o":"щ", "p":"з" , "[":"х" , "]":"ъ", "a":"ф", "s":"ы","d":"в" , "f":"а"  , "g":"п" , "h":"р" , "j":"о", "k":"л", "l":"д",";":"ж" , "'":"э"  , "z":"я", "x":"ч", "c":"с", "v":"м", "b":"и","n":"т" , "m":"ь"  , ",":"б" , ".":"ю" , "/":"."},
 eng = Object.keys(replacer),
 rus = Object.values(replacer),
@@ -25,5 +28,5 @@ if(str[i] !== str[i].toLowerCase()) rstr = rstr.toString().toUpperCase()
 if(rusfind || engfind) str[i] = rstr
 } else if(str[i].toLowerCase() === 'ё') str[i] = (str[i] === str[i].toLowerCase()?'t':'T')
 }
-message.channel.send(Comp.succ(str.join('').replace(/(http:\/\/|https:\/\/)?discord(app\.com\/invite|.\w{2}\/\w{3,})/gi, '[INVITE]'), message.lang))
+message.channel.send(Comp.succ(str.join('').replace(/(http:\/\/|https:\/\/)?discord(app\.com\/invite|.\w{2}\/\w{3,})/gi, '[INVITE]'), message.lang, ne))
 }

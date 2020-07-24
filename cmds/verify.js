@@ -6,6 +6,8 @@ desc: 'Верифицирует пользователя',
 engdesc: 'Verifing a user',
 }
 module.exports.run = async (message, ph) => {
+if(!message.guild.me.hasPermission('EMBED_LINKS'))
+return message.reply(ph[7])
 if(!message.author.bot && (['verify', 'verification', 'верифи', 'верификация'].includes(message.channel.name) || [/*some ids*/'561921259429167117'].includes(message.channel.id))){
 message.channel.startTyping()
 let i = 0, captcha = Math.random().toString(36).substr(2, 6), user = message.member,

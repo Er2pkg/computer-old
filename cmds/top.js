@@ -10,7 +10,10 @@ engdesc: `shows top ${pl} of users`,
 regex: 'то[пб]',
 engregex: 'to[pb]',
 },
-run: message =>
+run: message => {
+let ne = false
+if(message.flags.has('noembed') || !message.guild.me.hasPermission('EMBED_LINKS'))
+ne = true
 Comp.DB.get('User').find({}).then(async i=> {
 i = i
 .sort((a,b)=>b.profile.xp-a.profile.xp)
@@ -22,11 +25,12 @@ Comp.client.users.fetch(x.id)
 for(let x=0;x<m.length;x++)
 i[x] = Comp.getEmoji(m[x]) + i[x].slice(2)
 message.channel.send(
-new Comp.Embed()
+ne?`TOP ${pl}\n${i.join('\n')}`:new Comp.Embed()
 .setColor(Comp.beta?'BLURPLE':'00fff0')
 .addField('TOP '+pl, i)
 )
-.catch(e =>message.channel.send(new Comp.Embed().setColor('ff0055').setTitle('ERROR').setDescription(e)))
+.catch(e =>message.channel.send(Comp.err('', e, '', message.lang, ne)))
 })
-.catch(e =>message.channel.send(new Comp.Embed().setColor('ff0055').setTitle('ERROR').setDescription(e)))
+.catch(e =>message.channel.send(Comp.err('', e, '', message.lang, ne)))
+}
 }

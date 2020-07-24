@@ -5,11 +5,8 @@ if(!message.prefix && (!emitted || (emitted && emitted == 0))) {
 let loc = locale('events', 'message'),
 row = await Comp.models.get('User').findOne({id: message.author.id})
 if(!row) return
-if(Comp.getLvl(row.profile.xp+message.xp) > Comp.getLvl(row.profile.xp)) {
-//console.log('Lvlup', 'Level:', Comp.getLvl(row.profile.xp)+1, 'User:', message.author.tag)
-message.channel.send(new Comp.Discord.MessageEmbed()
-.setTitle(loc[1])
-.setColor(Comp.beta?'BLURPLE':'00fff0')
-.addField(loc[2], Comp.getLvl(row.profile.xp)+1)).then(msg => msg.delete({timeout: 6500}))
-}}
+if(Comp.getLvl(row.profile.xp+message.xp) > Comp.getLvl(row.profile.xp))
+//console.log('Lvlup', 'Level:', Comp.getLvl(row.profile.xp)+1, 'User:', message.author.tag),
+message.reply(loc[1].replace('x', Comp.getLvl(row.profile.xp)+1))
+}
 }
