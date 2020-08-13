@@ -1,0 +1,1 @@
+﻿global.Core = new (require('./src/components/Core'))

@@ -1,0 +1,32 @@
+{
+  "name": "computer",
+  "version": "1.1.0",
+  "ver": {
+    "version": "3.0",
+    "builder": "Er2",
+    "build": "3000",
+    "beta": false
+  },
+  "description": "Computer bot based on @er2ch/core module",
+  "main": "init.js",
+  "author": "Er2",
+  "license": "MIT",
+  "dependencies": {
+    "discord.js": "^12.2.0",
+    "mongoose": "^5.9.27"
+  },
+  "scripts": {
+    "start": "node ."
+  },
+  "engines": {
+    "node": "^14.x"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Er2pkg/computer.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Er2pkg/computer/issues"
+  },
+  "homepage": "https://github.com/Er2pkg/computer#readme"
+}

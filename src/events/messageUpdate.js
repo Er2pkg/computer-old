@@ -1,0 +1,1 @@
+module.exports.run = (x, message) => x.content !== message.content?Core.emit('message', message, 1):''

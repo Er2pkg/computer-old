@@ -1,0 +1,23 @@
+{
+  "name": "brfck",
+  "version": "1.6.0",
+  "description": "An easy and expandable Brainfuck interpreter",
+  "main": "brfck.js",
+  "author": "Er2",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Er2ch/brfck.git"
+  },
+  "keywords": [
+    "brain",
+    "fuck",
+    "brainfuck",
+    "Er2",
+    "Ertu"
+  ],
+  "bugs": {
+    "url": "https://github.com/Er2ch/brfck/issues"
+  },
+  "homepage": "https://github.com/Er2ch/brfck#readme"
+}
