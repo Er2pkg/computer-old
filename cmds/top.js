@@ -23,6 +23,7 @@ Comp.client.users.fetch(x.id)
 .then(u=>x=map(u,x,p), e=>x=map({},x,p))
 ))
 for(let x=0;x<m.length;x++)
+if(i[x])
 i[x] = Comp.getEmoji(m[x]) + i[x].slice(2)
 message.channel.send(
 ne?`TOP ${pl}\n${i.join('\n')}`:new Comp.Embed()

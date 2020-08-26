@@ -16,6 +16,8 @@ Comp.client.stats.users = {users: Comp.client.users.cache.filter(u => !u.bot).si
 }, 5000)
 
 Comp.cStat = setInterval(() => {
+if(Comp.beta)
+return clearInterval(Comp.cStat)
 let embed, info = [
 `${Comp.beta?'[BETA] ':''}Бот ${Comp.client.user.tag}`,
 {
@@ -53,9 +55,9 @@ embed = new Comp.Embed()
 info
 .filter(i=>typeof i !=='string')
 .forEach(i=>embed.addField(i.key, i.val))
-Comp.client.channels.cache.get('695980819650576384').messages.fetch(Comp.beta?'698508253205889144':'695981096202010654').then(msg => 
+Comp.client.channels.cache.get('695980819650576384').messages.fetch('695981096202010654').then(msg => 
 msg.edit(embed))
-if(Comp.beta) return
+
 Comp.client.channels.cache.get('695980819650576384').messages.fetch('735846116532158555').then(msg => {
 Comp.DB.get('User').find({}).then(async i=> {
 i = i
@@ -67,6 +69,7 @@ Comp.client.users.fetch(x.id)
 .catch(e=>x=map({},x,p))
 ))
 for(let x=0;x<m.length;x++)
+if(i[x])
 i[x] = Comp.getEmoji(m[x]) + i[x].slice(2)
 msg.edit(
 new Comp.Embed()
