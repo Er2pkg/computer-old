@@ -4,7 +4,7 @@
   "description": "",
   "main": "load.js",
   "author": "Er2",
-  "license": "ISC",
+  "license": "Zlib",
   "dependencies": {
     "@megavasiliy007/sdc-api": "github:MegaVasiliy007/sdc-api",
     "brfck": "^1.6.0",
